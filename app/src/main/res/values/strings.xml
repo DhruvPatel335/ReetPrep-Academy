@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ReetPrep Academy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="courses_title">Courses</string>
+    <string name="current_affair_title">Current Affair</string>
+    <string name="test_series_title">Test Series</string>
+    <string name="daily_quiz_title">Daily Quiz</string>
+    <string name="rpsc_title">Raj Exams</string>
+    <string name="foundation_title">Foundation</string>
+    <string name="ssc_title">SSC</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

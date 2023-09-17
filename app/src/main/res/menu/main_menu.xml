@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/homeNavigation"
+        android:icon="@drawable/icon_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/currentAffairNavigation"
+        android:icon="@drawable/icon_current_affair"
+        android:title="Current Affairs" />
+    <item
+        android:id="@+id/courseNavigation"
+        android:icon="@drawable/cart"
+        android:title="Course" />
+</menu>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeNavigation">
+
+    <fragment
+        android:id="@+id/homeNavigation"
+        android:name="com.reet.prep.academy.fragments.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeNavigation_to_courseNavigation"
+            app:destination="@id/courseNavigation" />
+        <action
+            android:id="@+id/action_homeNavigation_to_currentAffairNavigation"
+            app:destination="@id/currentAffairNavigation" />
+        <action
+            android:id="@+id/action_homeNavigation_to_courses"
+            app:destination="@id/courses" />
+        <action
+            android:id="@+id/action_homeNavigation_to_dailyQuizzes"
+            app:destination="@id/dailyQuizzes" />
+        <action
+            android:id="@+id/action_homeNavigation_to_testSeries"
+            app:destination="@id/testSeries" />
+        <action
+            android:id="@+id/action_homeNavigation_to_myProfile"
+            app:destination="@id/myProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentAffairNavigation"
+        android:name="com.reet.prep.academy.fragments.CurrentAffair"
+        android:label="fragment_current_affair"
+        tools:layout="@layout/fragment_current_affair" />
+    <fragment
+        android:id="@+id/courseNavigation"
+        android:name="com.reet.prep.academy.fragments.PurchasedCourse"
+        android:label="fragment_course"
+        tools:layout="@layout/fragment_course" />
+    <fragment
+        android:id="@+id/courses"
+        android:name="com.reet.prep.academy.fragments.Courses"
+        android:label="fragment_courses"
+        tools:layout="@layout/fragment_courses" />
+    <fragment
+        android:id="@+id/dailyQuizzes"
+        android:name="com.reet.prep.academy.fragments.DailyQuizzes"
+        android:label="fragment_daily_quizes"
+        tools:layout="@layout/fragment_daily_quizes" />
+    <fragment
+        android:id="@+id/testSeries"
+        android:name="com.reet.prep.academy.fragments.TestSeries"
+        android:label="fragment_test_series"
+        tools:layout="@layout/fragment_test_series" />
+    <fragment
+        android:id="@+id/myProfile"
+        android:name="com.reet.prep.academy.fragments.MyProfile"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
+</navigation>
