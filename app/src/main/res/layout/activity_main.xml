@@ -22,6 +22,7 @@
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/match_constraint"
+                android:layout_marginBottom="?android:attr/actionBarSize"
                 app:defaultNavHost="true"
                 app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
                 app:layout_constraintTop_toTopOf="parent"
