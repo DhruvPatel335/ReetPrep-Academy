@@ -41,9 +41,11 @@ class Images : Fragment() {
         currentAffairImageAdapter = CurrentAffairImageAdapter(requireContext(), sliderItems)
         viewPager.adapter = currentAffairImageAdapter
         viewModel.getCurrentAffairImages.observe(viewLifecycleOwner) {
-            Log.e("List of images", it.toString())
-            sliderItems.addAll(it)
-            currentAffairImageAdapter.notifyDataSetChanged()
+            if (!viewModel.isImagesLoaded){
+                sliderItems.addAll(it)
+                viewModel.isImagesLoaded = true
+                currentAffairImageAdapter.notifyDataSetChanged()
+            }
         }
     }
 

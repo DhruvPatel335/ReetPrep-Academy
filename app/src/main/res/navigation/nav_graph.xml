@@ -33,7 +33,9 @@
         android:id="@+id/currentAffairNavigation"
         android:name="com.reet.prep.academy.fragments.CurrentAffair"
         android:label="fragment_current_affair"
-        tools:layout="@layout/fragment_current_affair" />
+        tools:layout="@layout/fragment_current_affair" >
+
+    </fragment>
     <fragment
         android:id="@+id/courseNavigation"
         android:name="com.reet.prep.academy.fragments.PurchasedCourse"

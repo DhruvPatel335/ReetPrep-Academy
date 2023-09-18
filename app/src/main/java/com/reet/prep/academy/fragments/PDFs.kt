@@ -1,60 +1,65 @@
 package com.reet.prep.academy.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.reet.prep.academy.R
+import com.reet.prep.academy.adapter.CurrentAffairPdfAdapter
+import com.reet.prep.academy.databinding.FragmentPDFsBinding
+import com.reet.prep.academy.model.CAProduct
+import com.reet.prep.academy.viewmodel.CurrentAffairViewModel
+import com.reet.prep.academy.viewmodel.ViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PDFs.newInstance] factory method to
- * create an instance of this fragment.
- */
-class PDFs : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+class PDFs : Fragment(), CurrentAffairPdfAdapter.OnItemClickListener {
+    private lateinit var binding: FragmentPDFsBinding
+    private lateinit var viewModel: CurrentAffairViewModel
+    private var pdfListLiveData: MutableList<CAProduct> = mutableListOf()
+    private lateinit var pdfAdapter: CurrentAffairPdfAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        viewModel = ViewModelProvider(this, ViewModelFactory())[CurrentAffairViewModel::class.java]
+        viewModel.fetchCurrentAffairPds()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_p_d_fs, container, false)
+        binding = FragmentPDFsBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PDFs.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PDFs().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getCurrentAffairPdfs.observe(viewLifecycleOwner) {
+            pdfListLiveData.addAll(it)
+            pdfAdapter.notifyDataSetChanged()
+        }
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        pdfAdapter = CurrentAffairPdfAdapter(requireContext(), pdfListLiveData)
+        binding.rvPdfs.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvPdfs.adapter = pdfAdapter
+        pdfAdapter.setOnItemClickListener(this)
+    }
+
+    override fun onClick(position: Int) {
+        val bundle = bundleOf()
+//        bundle.putString("PDF_URL", pdfListLiveData[position].link)
+//        findNavController().navigate(R.id.action_currentAffairNavigation_to_loadPdf, bundle)
+        val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfListLiveData[position].link))
+        startActivity(intent)
     }
 }
