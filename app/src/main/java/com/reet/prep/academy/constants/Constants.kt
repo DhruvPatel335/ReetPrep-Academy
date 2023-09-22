@@ -1,5 +1,7 @@
 package com.reet.prep.academy.constants
 
 class Constants {
-//    val HOME_OFFERS =
+    companion object {
+        const val SUBJECT_DOCUMENT_ID = "TEST_QUIZ_SUBJECT"
+    }
 }

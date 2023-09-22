@@ -41,8 +41,12 @@ class PDFs : Fragment(), CurrentAffairPdfAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getCurrentAffairPdfs.observe(viewLifecycleOwner) {
-            pdfListLiveData.addAll(it)
-            pdfAdapter.notifyDataSetChanged()
+            if (!viewModel.isPdfsLoaded) {
+                pdfListLiveData.addAll(it)
+                pdfAdapter.notifyDataSetChanged()
+                viewModel.isPdfsLoaded = true
+            }
+
         }
         initRecyclerView()
     }
@@ -56,9 +60,6 @@ class PDFs : Fragment(), CurrentAffairPdfAdapter.OnItemClickListener {
     }
 
     override fun onClick(position: Int) {
-        val bundle = bundleOf()
-//        bundle.putString("PDF_URL", pdfListLiveData[position].link)
-//        findNavController().navigate(R.id.action_currentAffairNavigation_to_loadPdf, bundle)
         val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfListLiveData[position].link))
         startActivity(intent)
     }

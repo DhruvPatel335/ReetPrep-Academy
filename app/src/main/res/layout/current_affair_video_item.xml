@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_product"
+        android:elevation="8dp"
+        android:layout_margin="10dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineVertical20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineVertical23"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".28" />
+
+        <ImageView
+            android:id="@+id/ivVideoThumbnail"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="10dp"
+            android:src="@{@drawable/icon_current_affair}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvVideoName"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:gravity="bottom"
+            android:maxLines="1"
+            android:text="Heading"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivProviderArrow"
+            app:layout_constraintStart_toEndOf="@id/guidelineVertical23"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/ivProviderArrow"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/icon_forward"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

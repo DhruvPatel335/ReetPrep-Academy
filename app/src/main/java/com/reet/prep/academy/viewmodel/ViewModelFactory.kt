@@ -7,6 +7,7 @@ class ViewModelFactory: ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = when (modelClass) {
         HomeViewModel::class.java -> HomeViewModel()
         CurrentAffairViewModel::class.java->CurrentAffairViewModel()
+        TestSeriesViewModel::class.java->TestSeriesViewModel()
         else -> throw IllegalArgumentException("No ViewModel registered for $modelClass")
     } as T
 

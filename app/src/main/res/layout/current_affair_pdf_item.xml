@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_background_product"
     android:clipToPadding="false"
-    android:layout_margin="5dp">
+    android:layout_margin="10dp"
+    android:elevation="8dp">
 
     <ImageView
         android:id="@+id/ivPdfIcon"

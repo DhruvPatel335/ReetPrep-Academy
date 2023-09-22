@@ -35,6 +35,9 @@
         android:label="fragment_current_affair"
         tools:layout="@layout/fragment_current_affair" >
 
+        <action
+            android:id="@+id/action_currentAffairNavigation_to_playVideo"
+            app:destination="@id/playVideo" />
     </fragment>
     <fragment
         android:id="@+id/courseNavigation"
@@ -55,10 +58,22 @@
         android:id="@+id/testSeries"
         android:name="com.reet.prep.academy.fragments.TestSeries"
         android:label="fragment_test_series"
-        tools:layout="@layout/fragment_test_series" />
+        tools:layout="@layout/fragment_test_series" >
+        <action
+            android:id="@+id/action_testSeries_to_quizzesList"
+            app:destination="@id/quizzesList" />
+    </fragment>
     <fragment
         android:id="@+id/myProfile"
         android:name="com.reet.prep.academy.fragments.MyProfile"
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/playVideo"
+        android:name="com.reet.prep.academy.fragments.PlayVideo"
+        android:label="Videos" />
+    <fragment
+        android:id="@+id/quizzesList"
+        android:name="com.reet.prep.academy.fragments.QuizzesList"
+        android:label="QuizzesList" />
 </navigation>

@@ -1,4 +1,4 @@
 package com.reet.prep.academy.model
 
-data class CAProduct(val title: String, var link: String) {
+data class CAProduct(val title: String, val link: String) {
 }
