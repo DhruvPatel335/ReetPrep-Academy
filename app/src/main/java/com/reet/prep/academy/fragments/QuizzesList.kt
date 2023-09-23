@@ -5,23 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.QuizzesItemAdapter
+import com.reet.prep.academy.constants.Constants.Companion.QUIZ_ID
 import com.reet.prep.academy.constants.Constants.Companion.SUBJECT_DOCUMENT_ID
 import com.reet.prep.academy.databinding.FragmentQuizzesListBinding
+import com.reet.prep.academy.model.QuizModel
 import com.reet.prep.academy.viewmodel.TestSeriesViewModel
 import com.reet.prep.academy.viewmodel.ViewModelFactory
 
 class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
     private lateinit var binding: FragmentQuizzesListBinding
     private lateinit var viewModel: TestSeriesViewModel
-    private var testSeriesQuizzesList = mutableListOf<String>()
+    private var testSeriesQuizzesList = mutableListOf<QuizModel>()
     private lateinit var quizzesItemAdapter: QuizzesItemAdapter
+    private lateinit var subjectID: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactory())[TestSeriesViewModel::class.java]
-        viewModel.fetchTestSeriesQuizLiveData(requireArguments().getString(SUBJECT_DOCUMENT_ID)!!)
+        subjectID = requireArguments().getString(SUBJECT_DOCUMENT_ID).toString()
+        viewModel.fetchTestSeriesQuizLiveData(subjectID)
     }
 
     override fun onCreateView(
@@ -53,7 +60,9 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
     }
 
     override fun onClick(position: Int) {
-
+        var bundle = bundleOf()
+        bundle.putString(SUBJECT_DOCUMENT_ID, subjectID)
+        bundle.putString(QUIZ_ID, testSeriesQuizzesList[position].id)
+        findNavController().navigate(R.id.action_quizzesList_to_quizQuestions, bundle)
     }
-
 }

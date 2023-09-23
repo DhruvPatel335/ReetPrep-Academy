@@ -75,5 +75,13 @@
     <fragment
         android:id="@+id/quizzesList"
         android:name="com.reet.prep.academy.fragments.QuizzesList"
-        android:label="QuizzesList" />
+        android:label="QuizzesList" >
+        <action
+            android:id="@+id/action_quizzesList_to_quizQuestions"
+            app:destination="@id/quizQuestions" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizQuestions"
+        android:name="com.reet.prep.academy.fragments.QuizQuestions"
+        android:label="QuizQuestions" />
 </navigation>

@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.reet.prep.academy.R
+import com.reet.prep.academy.model.QuizModel
 import org.w3c.dom.Text
 
-class QuizzesItemAdapter(val context: Context, val quizList: List<String>) :
+class QuizzesItemAdapter(val context: Context, val quizList: List<QuizModel>) :
     RecyclerView.Adapter<QuizzesItemAdapter.ViewHolder>() {
     private lateinit var clickListener: OnItemClickListener
 
@@ -33,7 +34,7 @@ class QuizzesItemAdapter(val context: Context, val quizList: List<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.quizName.text = quizList[position]
+        holder.quizName.text = quizList[position].quizName
     }
 
     class ViewHolder(itemView: View, clickListener: OnItemClickListener) :
