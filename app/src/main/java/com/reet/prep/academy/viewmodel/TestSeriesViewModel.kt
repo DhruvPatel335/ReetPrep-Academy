@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import com.reet.prep.academy.model.QuestionsModel
 import com.reet.prep.academy.model.QuizModel
 import com.reet.prep.academy.model.TestSubject
+import com.reet.prep.academy.repository.AuthenticationRepository
 import com.reet.prep.academy.repository.TestSeriesRepository
 
 class TestSeriesViewModel : ViewModel() {
     private val testSeriesRepository: TestSeriesRepository = TestSeriesRepository()
+    private val authenticationRepository:AuthenticationRepository = AuthenticationRepository()
     private var testSeriesSubjectLiveData: MutableLiveData<List<TestSubject>> = MutableLiveData()
     private var testSeriesQuizListLiveData: MutableLiveData<List<QuizModel>> = MutableLiveData()
     private var testSeriesQuestionsListLiveData: MutableLiveData<List<QuestionsModel>> =
@@ -41,5 +43,9 @@ class TestSeriesViewModel : ViewModel() {
 
     fun fetchTestSeriesQuestions(subjectId: String, quizId: String) {
         testSeriesRepository.fetchQuestions(subjectId, quizId)
+    }
+
+    fun isCoursePurchased(courseId:String, userId:String,callback:(Boolean) -> Unit){
+        authenticationRepository.isCoursePurchases(courseId,userId, callback)
     }
 }

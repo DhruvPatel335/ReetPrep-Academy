@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.reet.prep.academy.fragments.QuizQuestions
 import com.reet.prep.academy.model.QuestionsModel
 import com.reet.prep.academy.model.QuizModel
 import com.reet.prep.academy.model.TestSubject
@@ -38,7 +37,8 @@ class TestSeriesRepository {
                         TestSubject(
                             document.data["subjectName"].toString(),
                             document.data["thumbnail"].toString(),
-                            document.id
+                            document.id,
+                            document.data["amount"].toString().toFloat()
                         )
                     )
                 }
@@ -57,7 +57,7 @@ class TestSeriesRepository {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     Log.e("DocumentId", document.id)
-                    quizzes.add(QuizModel(document.id,document.data["Name"].toString()))
+                    quizzes.add(QuizModel(document.id, document.data["Name"].toString()))
                 }
                 testSeriesQuizNameLiveData.value = quizzes
                 Log.e("ListQuizzes", quizzes.toString())
@@ -67,9 +67,10 @@ class TestSeriesRepository {
             }
     }
 
-    fun fetchQuestions(subjectId: String,quizId:String) {
+    fun fetchQuestions(subjectId: String, quizId: String) {
         var quizzes = mutableListOf<QuestionsModel>()
-        dbAuthors.collection("test_series").document(subjectId).collection("Quizzes").document(quizId).collection("Questions")
+        dbAuthors.collection("test_series").document(subjectId).collection("Quizzes")
+            .document(quizId).collection("Questions")
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
