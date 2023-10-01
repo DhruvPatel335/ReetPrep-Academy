@@ -1,5 +1,7 @@
 package com.reet.prep.academy.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -71,9 +73,9 @@ class Videos : Fragment(), VideoModelAdapter.OnItemClickListener {
     }
 
     override fun onClick(position: Int) {
-        val bundle = bundleOf()
-        bundle.putString("VIDEO_URL", videoList[position].videoUrl)
-        findNavController().navigate(R.id.action_currentAffairNavigation_to_playVideo,bundle)
+        val videoIntent = Intent(Intent.ACTION_VIEW)
+        videoIntent.data = Uri.parse(videoList[position].videoUrl)
+        startActivity(videoIntent)
     }
 
 }
