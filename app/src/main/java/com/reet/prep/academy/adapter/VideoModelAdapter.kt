@@ -48,6 +48,5 @@ class VideoModelAdapter(val context: Context, val videoList: List<VideoModel>) :
                 clickListener.onClick(bindingAdapterPosition)
             }
         }
-
     }
 }

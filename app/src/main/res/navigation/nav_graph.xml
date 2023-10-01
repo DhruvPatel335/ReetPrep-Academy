@@ -39,12 +39,16 @@
         android:id="@+id/courseNavigation"
         android:name="com.reet.prep.academy.fragments.PurchasedCourse"
         android:label="fragment_course"
-        tools:layout="@layout/fragment_course" />
+        tools:layout="@layout/fragment_purchased_course" />
     <fragment
         android:id="@+id/courses"
         android:name="com.reet.prep.academy.fragments.Courses"
         android:label="fragment_courses"
-        tools:layout="@layout/fragment_courses" />
+        tools:layout="@layout/fragment_courses" >
+        <action
+            android:id="@+id/action_courses_to_courseContents"
+            app:destination="@id/courseContents" />
+    </fragment>
     <fragment
         android:id="@+id/dailyQuizzes"
         android:name="com.reet.prep.academy.fragments.DailyQuizzes"
@@ -76,4 +80,8 @@
         android:id="@+id/quizQuestions"
         android:name="com.reet.prep.academy.fragments.QuizQuestions"
         android:label="QuizQuestions" />
+    <fragment
+        android:id="@+id/courseContents"
+        android:name="com.reet.prep.academy.fragments.CourseContents"
+        android:label="CourseContents" />
 </navigation>

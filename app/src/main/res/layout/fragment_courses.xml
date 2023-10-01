@@ -20,50 +20,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/ilRajExams"
-            layout="@layout/explore_courses_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="7.5dp"
-            android:layout_marginBottom="7.5dp"
-            app:image="@{@drawable/rpsc_icon}"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvCourses"
-            app:title="@{@string/rpsc_title}" />
-
-        <include
-            android:id="@+id/ilFoundation"
-            layout="@layout/explore_courses_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7.5dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="7.5dp"
-            app:image="@{@drawable/foundation}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/tvCourses"
-            app:title="@{@string/foundation_title}" />
-
-        <include
-            android:id="@+id/ilSscExams"
-            layout="@layout/explore_courses_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="7.5dp"
-            android:layout_marginBottom="7.5dp"
-            app:image="@{@drawable/ssc_icon}"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ilRajExams"
-            app:title="@{@string/ssc_title}" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCourseSubjects"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/match_constraint"
+            android:layout_marginTop="10dp"
+            android:text="@string/hello_blank_fragment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCourses" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
