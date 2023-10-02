@@ -83,5 +83,14 @@
     <fragment
         android:id="@+id/courseContents"
         android:name="com.reet.prep.academy.fragments.CourseContents"
-        android:label="CourseContents" />
+        android:label="CourseContents" >
+        <action
+            android:id="@+id/action_courseContents_to_pdfViewer"
+            app:destination="@id/pdfViewer" />
+    </fragment>
+    <fragment
+        android:id="@+id/pdfViewer"
+        android:name="com.reet.prep.academy.fragments.PdfViewer"
+        android:label="fragment_pdf_viewer"
+        tools:layout="@layout/fragment_pdf_viewer" />
 </navigation>

@@ -1,4 +1,11 @@
 buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://jcenter.bintray.com")
+
+    }
     dependencies {
         classpath("com.google.gms:google-services:4.4.0")
     }

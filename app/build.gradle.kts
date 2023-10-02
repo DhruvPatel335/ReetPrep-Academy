@@ -62,5 +62,6 @@ dependencies {
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.13.1")
     implementation ("com.google.android.exoplayer:exoplayer:2.19.1")
+//    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
 //    implementation ("com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT")
 }
