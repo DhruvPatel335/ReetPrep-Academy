@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
@@ -26,7 +28,7 @@ import com.reet.prep.academy.repository.TestSeriesRepository
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), PaymentResultListener {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
     lateinit var drawer: DrawerLayout
@@ -35,12 +37,13 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
     private lateinit var courseID: String
     private lateinit var phoneNumber: String
     private val authenticationRepository = AuthenticationRepository()
+    lateinit var actionBar:ActionBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Checkout.preload(applicationContext);
-
+        actionBar = supportActionBar!!
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_fragment_content_main
         ) as NavHostFragment

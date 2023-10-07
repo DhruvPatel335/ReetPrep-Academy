@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.VideoModelAdapter
@@ -65,6 +67,6 @@ class CourseVideos : Fragment(), VideoModelAdapter.OnItemClickListener {
 
     override fun onClick(position: Int) {
         Log.e("clicked", "true")
+        findNavController().navigate(R.id.action_courseContents_to_playVideo, bundleOf("key" to videoList[position].videoUrl))
     }
-
 }

@@ -87,10 +87,17 @@
         <action
             android:id="@+id/action_courseContents_to_pdfViewer"
             app:destination="@id/pdfViewer" />
+        <action
+            android:id="@+id/action_courseContents_to_playVideo"
+            app:destination="@id/playVideo" />
     </fragment>
     <fragment
         android:id="@+id/pdfViewer"
         android:name="com.reet.prep.academy.fragments.PdfViewer"
         android:label="fragment_pdf_viewer"
         tools:layout="@layout/fragment_pdf_viewer" />
+    <fragment
+        android:id="@+id/playVideo"
+        android:name="com.reet.prep.academy.fragments.PlayVideo"
+        android:label="PlayVideo" />
 </navigation>
