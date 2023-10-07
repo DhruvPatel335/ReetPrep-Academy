@@ -63,6 +63,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initiateOtp() {
+        binding.tvError.visibility = View.GONE
+        binding.pbOtpProgressBar.visibility = View.VISIBLE
         val options = PhoneAuthOptions.newBuilder(mAuth)
             .setPhoneNumber("+91" + binding.etPhoneNumber.text.toString())
             .setTimeout(60L, TimeUnit.SECONDS)
@@ -95,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                     binding.tvError.visibility = View.VISIBLE
-
+                    binding.pbOtpProgressBar.visibility = View.GONE
                 }
 
                 override fun onCodeSent(
@@ -103,6 +105,7 @@ class LoginActivity : AppCompatActivity() {
                     token: PhoneAuthProvider.ForceResendingToken
                 ) {
                     binding.tvError.visibility = View.GONE
+                    binding.pbOtpProgressBar.visibility = View.GONE
                     Log.d(TAG, "onCodeSent:$verificationId")
                     Toast.makeText(this@LoginActivity, "Otp sent", Toast.LENGTH_SHORT).show()
                     storedVerificationId = verificationId
@@ -119,6 +122,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     binding.tvError.visibility = View.GONE
                     Log.d(TAG, "signInWithCredential:success")
+                    binding.pbOtpProgressBar.visibility = View.GONE
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
@@ -129,6 +133,7 @@ class LoginActivity : AppCompatActivity() {
                         binding.tvError.text =
                             (task.exception as FirebaseAuthInvalidCredentialsException).message
                         binding.tvError.visibility = View.VISIBLE
+                        binding.pbOtpProgressBar.visibility = View.VISIBLE
                     }
                 }
             }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -80,22 +80,27 @@
 
         <Button
             android:id="@+id/btnGetOtp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:backgroundTint="@color/blue_brand_color"
             android:text="Get Otp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnSignIn"
             app:layout_constraintTop_toBottomOf="@id/tvError"
             app:layout_goneMarginTop="20dp" />
 
         <Button
             android:id="@+id/btnSignIn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:backgroundTint="@color/blue_brand_color"
             android:text="Sign In"
-            app:layout_constraintTop_toBottomOf="@id/btnGetOtp" />
+            app:layout_constraintBottom_toBottomOf="@id/btnGetOtp"
+            app:layout_constraintStart_toEndOf="@id/btnGetOtp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnGetOtp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineVertical15"
@@ -103,6 +108,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.05" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/pbOtpProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            app:showAnimationBehavior="outward"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/etOTP" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
