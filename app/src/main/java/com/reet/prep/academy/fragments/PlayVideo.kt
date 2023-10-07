@@ -19,7 +19,6 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.reet.prep.academy.MainActivity
 import com.reet.prep.academy.databinding.FragmentPlayVideoBinding
 
-
 class PlayVideo : Fragment() {
     private var param1: String? = null
     private lateinit var binding: FragmentPlayVideoBinding
@@ -57,23 +56,25 @@ class PlayVideo : Fragment() {
             .createMediaSource(MediaItem.fromUri(param1!!))
         player?.setMediaSource(source, playbackPosition)
         player?.prepare()
-        player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+        player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
         player?.playWhenReady = true
     }
 
     override fun onResume() {
         super.onResume()
-    //    hideSystemUi()
+        hideSystemUi()
     }
 
     override fun onPause() {
         super.onPause()
         releasePlayer()
+        showSystemUi()
     }
 
     override fun onStop() {
         super.onStop()
         releasePlayer()
+        showSystemUi()
     }
 
     private fun releasePlayer() {
@@ -89,7 +90,7 @@ class PlayVideo : Fragment() {
     @SuppressLint("InlinedApi")
     private fun hideSystemUi() {
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
-        (activity as MainActivity).actionBar.hide()
+        (activity as MainActivity).binding.ablAppBar.visibility = View.GONE
 
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         WindowInsetsControllerCompat(
@@ -101,4 +102,20 @@ class PlayVideo : Fragment() {
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
+
+    private fun showSystemUi() {
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        (activity as MainActivity).binding.ablAppBar.visibility = View.VISIBLE
+        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
+        WindowInsetsControllerCompat(
+            requireActivity().window,
+            binding.playerView
+        ).let { controller ->
+            controller.show(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+        }
+    }
+
 }

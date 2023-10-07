@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Checkout.preload(applicationContext);
-        actionBar = supportActionBar!!
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_fragment_content_main
         ) as NavHostFragment
@@ -61,6 +61,10 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         }
         initDrawer()
         binding.nvDrawer.setNavigationItemSelectedListener(onNavigationItemSelected)
+
+        binding.ivMenu.setOnClickListener {
+            onMenuClicked()
+        }
     }
 
     private fun isStartDestination(): Boolean {
@@ -85,8 +89,6 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
 
     private fun initDrawer() {
         drawer = binding.dlDrawer
-        actionBarDrawerToggle =
-            ActionBarDrawerToggle(this, drawer, R.string.nav_open, R.string.nav_close)
         drawer.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                 //Empty overridden method
@@ -104,10 +106,14 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
                 //Empty overridden method
             }
         })
-        actionBarDrawerToggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-
+    private fun onMenuClicked() {
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END)
+        } else {
+            drawer.openDrawer(GravityCompat.END)
+        }
+    }
     private val onNavigationItemSelected =
         NavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
