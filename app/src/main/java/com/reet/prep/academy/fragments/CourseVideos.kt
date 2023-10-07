@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.VideoModelAdapter
 import com.reet.prep.academy.constants.Constants
@@ -46,13 +47,29 @@ class CourseVideos : Fragment(), VideoModelAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCourseVideos.observe(viewLifecycleOwner) {
-            Log.e("Videos", it.toString())
-            if (!viewModel.isVideosLoaded) {
-                videoList.addAll(it)
-                viewModel.isVideosLoaded = true
-                videoModelAdapter.notifyDataSetChanged()
+        viewModel.getCourseVideos.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+                    Log.e("Videos", response.toString())
+                    if (!viewModel.isVideosLoaded) {
+                        response.data?.let { videoList.addAll(it) }
+                        viewModel.isVideosLoaded = true
+                        videoModelAdapter.notifyDataSetChanged()
+                    }
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+
+                }
             }
+
         }
         initRecyclerView()
     }
@@ -67,6 +84,9 @@ class CourseVideos : Fragment(), VideoModelAdapter.OnItemClickListener {
 
     override fun onClick(position: Int) {
         Log.e("clicked", "true")
-        findNavController().navigate(R.id.action_courseContents_to_playVideo, bundleOf("key" to videoList[position].videoUrl))
+        findNavController().navigate(
+            R.id.action_courseContents_to_playVideo,
+            bundleOf("key" to videoList[position].videoUrl)
+        )
     }
 }

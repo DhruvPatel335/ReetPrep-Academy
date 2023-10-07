@@ -10,6 +10,8 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.common.graph.Network
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.CurrentAffairPdfAdapter
 import com.reet.prep.academy.constants.Constants
@@ -19,7 +21,7 @@ import com.reet.prep.academy.model.CAProduct
 import com.reet.prep.academy.viewmodel.CoursesViewModel
 import com.reet.prep.academy.viewmodel.ViewModelFactory
 
-class CoursePdfs : Fragment(),CurrentAffairPdfAdapter.OnItemClickListener {
+class CoursePdfs : Fragment(), CurrentAffairPdfAdapter.OnItemClickListener {
     private lateinit var subjectID: String
     private lateinit var binding: FragmentCoursePdfsBinding
     private lateinit var viewModel: CoursesViewModel
@@ -44,13 +46,26 @@ class CoursePdfs : Fragment(),CurrentAffairPdfAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCurrentAffairPdfs.observe(viewLifecycleOwner) {
-            if (!viewModel.isPdfsLoaded) {
-                pdfListLiveData.addAll(it)
-                pdfAdapter.notifyDataSetChanged()
-                viewModel.isPdfsLoaded = true
-            }
+        viewModel.getCurrentAffairPdfs.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    if (!viewModel.isPdfsLoaded) {
+                        binding.pbProgressBar.visibility = View.GONE
+                        response.data?.let { pdfListLiveData.addAll(it) }
+                        pdfAdapter.notifyDataSetChanged()
+                        viewModel.isPdfsLoaded = true
+                    }
 
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+            }
         }
         initRecyclerView()
     }
@@ -65,6 +80,9 @@ class CoursePdfs : Fragment(),CurrentAffairPdfAdapter.OnItemClickListener {
 
     override fun onClick(position: Int) {
         Log.e("clicked", "true")
-        findNavController().navigate(R.id.action_courseContents_to_pdfViewer, bundleOf("pdfUrl" to pdfListLiveData[position].link))
+        findNavController().navigate(
+            R.id.action_courseContents_to_pdfViewer,
+            bundleOf("pdfUrl" to pdfListLiveData[position].link)
+        )
     }
 }

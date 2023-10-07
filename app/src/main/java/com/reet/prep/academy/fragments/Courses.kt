@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.reet.prep.academy.MainActivity
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.TestSeriesSubjectAdapter
 import com.reet.prep.academy.constants.Constants
@@ -57,9 +58,24 @@ class Courses : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
         initRecyclerView()
         viewModel.getCoursesSubjectLiveData.observe(viewLifecycleOwner) {
             if (!viewModel.isCourseLoaded) {
-                coursesSubjectLiveData.addAll(it)
-                testSeriesSubjectAdapter.notifyDataSetChanged()
-                viewModel.isCourseLoaded = true
+                when (it) {
+                    is NetworkResult.Success -> {
+                        binding.pbProgressBar.visibility = View.GONE
+                        it.data?.let { it1 -> coursesSubjectLiveData.addAll(it1) }
+                        testSeriesSubjectAdapter.notifyDataSetChanged()
+                        viewModel.isCourseLoaded = true
+                        Log.e("NetworkResult", "Success")
+                    }
+                    is NetworkResult.Loading->{
+                        binding.pbProgressBar.visibility = View.VISIBLE
+                        Log.e("NetworkResult", "loading")
+                    }
+                    is NetworkResult.Failure->{
+                        binding.pbProgressBar.visibility = View.VISIBLE
+                        Log.e("NetworkResult", "Failure")
+                    }
+                }
+
             }
         }
     }
@@ -78,25 +94,26 @@ class Courses : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
     override fun onClick(position: Int) {
         val courseId = coursesSubjectLiveData[position].documentId
         val userId = Firebase.auth.uid!!
-        viewModel.isCoursePurchased(courseId, userId){
-                isCoursePurchased ->
-            if (isCoursePurchased){
+        viewModel.isCoursePurchased(courseId, userId) { isCoursePurchased ->
+            if (isCoursePurchased) {
                 Log.e("purchased", true.toString())
                 var bundle = bundleOf()
-                bundle.putString(Constants.SUBJECT_DOCUMENT_ID, coursesSubjectLiveData[position].documentId)
+                bundle.putString(
+                    Constants.SUBJECT_DOCUMENT_ID,
+                    coursesSubjectLiveData[position].documentId
+                )
                 findNavController().navigate(R.id.action_courses_to_courseContents, bundle)
-            }
-            else{
+            } else {
                 Log.e("purchased", false.toString())
                 val paymentRequest = JSONObject()
                 val paymentInitiator = JSONObject()
                 val amount = coursesSubjectLiveData[position].amount.roundToInt() * 100
-                val description = "Purchase for "+coursesSubjectLiveData[position].testSubject
+                val description = "Purchase for " + coursesSubjectLiveData[position].testSubject
                 paymentInitiator.put("phoneNumber", phoneNumber)
                 paymentInitiator.put("courseId", courseId)
                 paymentInitiator.put("uid", userId)
                 paymentRequest.put("name", "ReetPrepAcademy")
-                paymentRequest.put("description",description )
+                paymentRequest.put("description", description)
                 paymentRequest.put("theme.color", "")
                 paymentRequest.put("currency", "INR")
                 paymentRequest.put("amount", amount)
