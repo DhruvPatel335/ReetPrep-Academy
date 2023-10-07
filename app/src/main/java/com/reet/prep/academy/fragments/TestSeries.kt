@@ -18,18 +18,16 @@ import com.google.firebase.ktx.Firebase
 import com.reet.prep.academy.MainActivity
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.TestSeriesSubjectAdapter
+import com.reet.prep.academy.constants.Constants
+import com.reet.prep.academy.constants.Constants.Companion.QUIZ_TYPE_ID
 import com.reet.prep.academy.constants.Constants.Companion.SUBJECT_DOCUMENT_ID
+import com.reet.prep.academy.constants.Constants.Companion.TEST_SERIES
 import com.reet.prep.academy.databinding.FragmentTestSeriesBinding
 import com.reet.prep.academy.model.TestSubject
 import com.reet.prep.academy.viewmodel.TestSeriesViewModel
 import com.reet.prep.academy.viewmodel.ViewModelFactory
 import org.json.JSONObject
 import kotlin.math.roundToInt
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
     private val dbAuthors = Firebase.firestore
@@ -39,12 +37,14 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
     private lateinit var testSeriesSubjectAdapter: TestSeriesSubjectAdapter
     private lateinit var user: FirebaseUser
     private lateinit var phoneNumber: String
+    private lateinit var collectionId:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         user = FirebaseAuth.getInstance().currentUser!!
         phoneNumber = user.phoneNumber.toString()
         viewModel = ViewModelProvider(this, ViewModelFactory())[TestSeriesViewModel::class.java]
-        viewModel.fetchTestSeriesSubjectLiveData()
+        collectionId = arguments?.getString(Constants.QUIZ_TYPE_ID)!!
+        viewModel.fetchTestSeriesSubjectLiveData(collectionId)
     }
 
     override fun onCreateView(
@@ -78,12 +78,25 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
     override fun onClick(position: Int) {
         val courseId = testSeriesSubjectList[position].documentId
         val userId = Firebase.auth.uid!!
+        if (collectionId== TEST_SERIES){
+            checkForPurchase(courseId,userId,position)
+        }else{
+            Log.e("purchased", true.toString())
+            var bundle = bundleOf()
+            bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
+            bundle.putString(QUIZ_TYPE_ID,collectionId)
+            findNavController().navigate(R.id.action_testSeries_to_quizzesList, bundle)
+        }
+    }
+
+    private fun checkForPurchase(courseId: String, userId: String, position: Int) {
         viewModel.isCoursePurchased(courseId, userId){
-            isCoursePurchased ->
+                isCoursePurchased ->
             if (isCoursePurchased){
                 Log.e("purchased", true.toString())
                 var bundle = bundleOf()
                 bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
+                bundle.putString(QUIZ_TYPE_ID,collectionId)
                 findNavController().navigate(R.id.action_testSeries_to_quizzesList, bundle)
             }
             else{

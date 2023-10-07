@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,9 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.SlideAdapter
+import com.reet.prep.academy.constants.Constants.Companion.DAILY_QUIZZES
+import com.reet.prep.academy.constants.Constants.Companion.QUIZ_TYPE_ID
+import com.reet.prep.academy.constants.Constants.Companion.TEST_SERIES
 import com.reet.prep.academy.databinding.FragmentHomeBinding
 import com.reet.prep.academy.viewmodel.HomeViewModel
 import com.reet.prep.academy.viewmodel.ViewModelFactory
@@ -110,12 +114,11 @@ class Home : Fragment() {
             findNavController().navigate(R.id.action_homeNavigation_to_courses)
         }
         binding.ilDailyQuiz.root.setOnClickListener {
-            findNavController().navigate(R.id.action_homeNavigation_to_dailyQuizzes)
+            findNavController().navigate(R.id.action_homeNavigation_to_testSeries, bundleOf(QUIZ_TYPE_ID to DAILY_QUIZZES))
         }
         binding.ilTestSeries.root.setOnClickListener {
-            findNavController().navigate(R.id.action_homeNavigation_to_testSeries)
+            findNavController().navigate(R.id.action_homeNavigation_to_testSeries, bundleOf(QUIZ_TYPE_ID to TEST_SERIES))
         }
-
     }
 
     override fun onPause() {

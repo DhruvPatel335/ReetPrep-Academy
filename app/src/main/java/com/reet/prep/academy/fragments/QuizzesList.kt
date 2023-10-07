@@ -11,7 +11,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.QuizzesItemAdapter
+import com.reet.prep.academy.constants.Constants
 import com.reet.prep.academy.constants.Constants.Companion.QUIZ_ID
+import com.reet.prep.academy.constants.Constants.Companion.QUIZ_TYPE_ID
 import com.reet.prep.academy.constants.Constants.Companion.SUBJECT_DOCUMENT_ID
 import com.reet.prep.academy.databinding.FragmentQuizzesListBinding
 import com.reet.prep.academy.model.QuizModel
@@ -24,11 +26,14 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
     private var testSeriesQuizzesList = mutableListOf<QuizModel>()
     private lateinit var quizzesItemAdapter: QuizzesItemAdapter
     private lateinit var subjectID: String
+    private lateinit var collectionId:String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactory())[TestSeriesViewModel::class.java]
         subjectID = requireArguments().getString(SUBJECT_DOCUMENT_ID).toString()
-        viewModel.fetchTestSeriesQuizLiveData(subjectID)
+        collectionId = requireArguments().getString(Constants.QUIZ_TYPE_ID).toString()
+        viewModel.fetchTestSeriesQuizLiveData(subjectID, collectionId)
     }
 
     override fun onCreateView(
@@ -63,6 +68,7 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
         var bundle = bundleOf()
         bundle.putString(SUBJECT_DOCUMENT_ID, subjectID)
         bundle.putString(QUIZ_ID, testSeriesQuizzesList[position].id)
+        bundle.putString(QUIZ_TYPE_ID,collectionId)
         findNavController().navigate(R.id.action_quizzesList_to_quizQuestions, bundle)
     }
 }

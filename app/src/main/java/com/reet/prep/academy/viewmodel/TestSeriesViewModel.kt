@@ -33,16 +33,16 @@ class TestSeriesViewModel : ViewModel() {
     val getTestSeriesQuestions: MutableLiveData<List<QuestionsModel>>
         get() = testSeriesQuestionsListLiveData
 
-    fun fetchTestSeriesSubjectLiveData() {
-        testSeriesRepository.fetchTestSeriesSubjects()
+    fun fetchTestSeriesSubjectLiveData(collectionId:String) {
+        testSeriesRepository.fetchTestSeriesSubjects(collectionId)
     }
 
-    fun fetchTestSeriesQuizLiveData(documentId: String) {
-        testSeriesRepository.fetchQuizNameList(documentId)
+    fun fetchTestSeriesQuizLiveData(documentId: String, collectionId: String) {
+        testSeriesRepository.fetchQuizNameList(documentId,collectionId)
     }
 
-    fun fetchTestSeriesQuestions(subjectId: String, quizId: String) {
-        testSeriesRepository.fetchQuestions(subjectId, quizId)
+    fun fetchTestSeriesQuestions(subjectId: String, quizId: String, collectionId: String) {
+        testSeriesRepository.fetchQuestions(subjectId, quizId,collectionId)
     }
 
     fun isCoursePurchased(courseId:String, userId:String,callback:(Boolean) -> Unit){

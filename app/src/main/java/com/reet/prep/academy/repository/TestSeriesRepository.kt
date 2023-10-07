@@ -27,9 +27,9 @@ class TestSeriesRepository {
         return testSeriesQuizQuestionsLiveData
     }
 
-    fun fetchTestSeriesSubjects() {
+    fun fetchTestSeriesSubjects(collectionId: String) {
         var testSubject = mutableListOf<TestSubject>()
-        dbAuthors.collection("test_series")
+        dbAuthors.collection(collectionId)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
@@ -50,9 +50,9 @@ class TestSeriesRepository {
             }
     }
 
-    fun fetchQuizNameList(documentId: String) {
+    fun fetchQuizNameList(documentId: String, collectionId: String) {
         var quizzes = mutableListOf<QuizModel>()
-        dbAuthors.collection("test_series").document(documentId).collection("Quizzes")
+        dbAuthors.collection(collectionId).document(documentId).collection("Quizzes")
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
@@ -67,9 +67,9 @@ class TestSeriesRepository {
             }
     }
 
-    fun fetchQuestions(subjectId: String, quizId: String) {
+    fun fetchQuestions(subjectId: String, quizId: String, collectionId: String) {
         var quizzes = mutableListOf<QuestionsModel>()
-        dbAuthors.collection("test_series").document(subjectId).collection("Quizzes")
+        dbAuthors.collection(collectionId).document(subjectId).collection("Quizzes")
             .document(quizId).collection("Questions")
             .get()
             .addOnSuccessListener { result ->

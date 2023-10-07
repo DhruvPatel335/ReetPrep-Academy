@@ -21,13 +21,15 @@ class QuizQuestions : Fragment() {
     private lateinit var subjectID: String
     private lateinit var quizId: String
     private var position = 0
+    private lateinit var collectionId:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactory())[TestSeriesViewModel::class.java]
         subjectID = requireArguments().getString(Constants.SUBJECT_DOCUMENT_ID).toString()
         quizId = requireArguments().getString(Constants.QUIZ_ID).toString()
-        viewModel.fetchTestSeriesQuestions(subjectID, quizId)
+        collectionId = requireArguments().getString(Constants.QUIZ_TYPE_ID).toString()
+        viewModel.fetchTestSeriesQuestions(subjectID, quizId,collectionId)
 
     }
 
