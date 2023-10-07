@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
@@ -22,7 +23,7 @@ class CurrentAffairImageAdapter(private val context: Context, private val slider
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object` as ConstraintLayout
+        return view == `object` as CardView
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -36,6 +37,6 @@ class CurrentAffairImageAdapter(private val context: Context, private val slider
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as ConstraintLayout)
+        container.removeView(`object` as CardView)
     }
 }

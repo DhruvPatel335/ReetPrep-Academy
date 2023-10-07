@@ -9,9 +9,7 @@
     <com.reet.prep.academy.VerticalViewPager
         android:id="@+id/idVerticalViewPager"
         android:layout_width="match_parent"
-        android:layout_marginBottom="?android:attr/actionBarSize"
+        android:layout_margin="10dp"
         android:layout_height="match_parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
