@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.VerticalViewPager
 import com.reet.prep.academy.adapter.CurrentAffairImageAdapter
@@ -40,11 +41,24 @@ class Images : Fragment() {
         viewPager = binding.idVerticalViewPager
         currentAffairImageAdapter = CurrentAffairImageAdapter(requireContext(), sliderItems)
         viewPager.adapter = currentAffairImageAdapter
-        viewModel.getCurrentAffairImages.observe(viewLifecycleOwner) {
-            if (!viewModel.isImagesLoaded){
-                sliderItems.addAll(it)
-                viewModel.isImagesLoaded = true
-                currentAffairImageAdapter.notifyDataSetChanged()
+        viewModel.getCurrentAffairImages.observe(viewLifecycleOwner) {response->
+            when(response){
+                is NetworkResult.Success->{
+                    if (!viewModel.isImagesLoaded){
+                        binding.pbProgressBar.visibility = View.GONE
+                        response.data?.let { sliderItems.addAll(it) }
+                        viewModel.isImagesLoaded = true
+                        currentAffairImageAdapter.notifyDataSetChanged()
+                    }
+                }
+                is NetworkResult.Loading->{
+                    binding.pbProgressBar.visibility = View.VISIBLE
+
+                }
+                is NetworkResult.Failure->{
+                    binding.pbProgressBar.visibility = View.VISIBLE
+
+                }
             }
         }
     }

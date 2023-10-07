@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.VideoModelAdapter
 import com.reet.prep.academy.databinding.FragmentPDFsBinding
@@ -53,13 +54,24 @@ class Videos : Fragment(), VideoModelAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCurrentAffairVideos.observe(viewLifecycleOwner) {
-            Log.e("Videos", it.toString())
-            if (!viewModel.isVideosLoaded) {
-                videoList.addAll(it)
-                viewModel.isVideosLoaded = true
-                videoModelAdapter.notifyDataSetChanged()
+        viewModel.getCurrentAffairVideos.observe(viewLifecycleOwner) {response->
+            when(response){
+                is NetworkResult.Success->{
+                    Log.e("Videos", response.toString())
+                    if (!viewModel.isVideosLoaded) {
+                        response.data?.let { videoList.addAll(it) }
+                        viewModel.isVideosLoaded = true
+                        videoModelAdapter.notifyDataSetChanged()
+                    }
+                }
+                is NetworkResult.Loading->{
+
+                }
+                is NetworkResult.Failure->{
+
+                }
             }
+
         }
         initRecyclerView()
     }

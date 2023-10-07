@@ -1,6 +1,7 @@
 package com.reet.prep.academy.fragments
 
 import android.content.Intent
+import android.net.Network
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.CurrentAffairPdfAdapter
 import com.reet.prep.academy.databinding.FragmentPDFsBinding
@@ -40,12 +42,26 @@ class PDFs : Fragment(), CurrentAffairPdfAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCurrentAffairPdfs.observe(viewLifecycleOwner) {
-            if (!viewModel.isPdfsLoaded) {
-                pdfListLiveData.addAll(it)
-                pdfAdapter.notifyDataSetChanged()
-                viewModel.isPdfsLoaded = true
+        viewModel.getCurrentAffairPdfs.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    if (!viewModel.isPdfsLoaded) {
+                        binding.pbProgressBar.visibility = View.GONE
+                        response.data?.let { pdfListLiveData.addAll(it) }
+                        pdfAdapter.notifyDataSetChanged()
+                        viewModel.isPdfsLoaded = true
+                    }
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
             }
+
 
         }
         initRecyclerView()
