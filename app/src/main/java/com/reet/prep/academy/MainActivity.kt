@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.reet.prep.academy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
 import com.reet.prep.academy.fragments.PurchasedCourse
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
     private lateinit var courseID: String
     private lateinit var phoneNumber: String
     private val authenticationRepository = AuthenticationRepository()
-    lateinit var actionBar:ActionBar
+    lateinit var actionBar: ActionBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -107,6 +108,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
             }
         })
     }
+
     private fun onMenuClicked() {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END)
@@ -114,6 +116,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
             drawer.openDrawer(GravityCompat.END)
         }
     }
+
     private val onNavigationItemSelected =
         NavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -123,7 +126,8 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
                 }
 
                 R.id.logOut -> {
-
+                    FirebaseAuth.getInstance().signOut()
+                    finish()
                 }
             }
             true

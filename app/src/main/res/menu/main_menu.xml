@@ -11,5 +11,6 @@
     <item
         android:id="@+id/courseNavigation"
         android:icon="@drawable/cart"
-        android:title="Course" />
+        android:title="Course"
+        android:enabled="false"/>
 </menu>
