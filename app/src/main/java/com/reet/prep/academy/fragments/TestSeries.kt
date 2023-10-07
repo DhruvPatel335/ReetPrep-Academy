@@ -16,6 +16,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.reet.prep.academy.MainActivity
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.TestSeriesSubjectAdapter
 import com.reet.prep.academy.constants.Constants
@@ -37,7 +38,7 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
     private lateinit var testSeriesSubjectAdapter: TestSeriesSubjectAdapter
     private lateinit var user: FirebaseUser
     private lateinit var phoneNumber: String
-    private lateinit var collectionId:String
+    private lateinit var collectionId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         user = FirebaseAuth.getInstance().currentUser!!
@@ -58,12 +59,26 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getTestSeriesSubjectLiveData.observe(viewLifecycleOwner) {
-            if (!viewModel.isTestSeriesLoaded) {
-                testSeriesSubjectList.addAll(it)
-                testSeriesSubjectAdapter.notifyDataSetChanged()
-                viewModel.isTestSeriesLoaded = true
+        viewModel.getTestSeriesSubjectLiveData.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    if (!viewModel.isTestSeriesLoaded) {
+                        binding.pbProgressBar.visibility = View.GONE
+                        response.data?.let { testSeriesSubjectList.addAll(it) }
+                        testSeriesSubjectAdapter.notifyDataSetChanged()
+                        viewModel.isTestSeriesLoaded = true
+                    }
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
             }
+
         }
         testSeriesSubjectAdapter = TestSeriesSubjectAdapter(requireContext(), testSeriesSubjectList)
         binding.rvTestSeriesSubjects.apply {
@@ -78,38 +93,36 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
     override fun onClick(position: Int) {
         val courseId = testSeriesSubjectList[position].documentId
         val userId = Firebase.auth.uid!!
-        if (collectionId== TEST_SERIES){
-            checkForPurchase(courseId,userId,position)
-        }else{
+        if (collectionId == TEST_SERIES) {
+            checkForPurchase(courseId, userId, position)
+        } else {
             Log.e("purchased", true.toString())
             var bundle = bundleOf()
             bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
-            bundle.putString(QUIZ_TYPE_ID,collectionId)
+            bundle.putString(QUIZ_TYPE_ID, collectionId)
             findNavController().navigate(R.id.action_testSeries_to_quizzesList, bundle)
         }
     }
 
     private fun checkForPurchase(courseId: String, userId: String, position: Int) {
-        viewModel.isCoursePurchased(courseId, userId){
-                isCoursePurchased ->
-            if (isCoursePurchased){
+        viewModel.isCoursePurchased(courseId, userId) { isCoursePurchased ->
+            if (isCoursePurchased) {
                 Log.e("purchased", true.toString())
                 var bundle = bundleOf()
                 bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
-                bundle.putString(QUIZ_TYPE_ID,collectionId)
+                bundle.putString(QUIZ_TYPE_ID, collectionId)
                 findNavController().navigate(R.id.action_testSeries_to_quizzesList, bundle)
-            }
-            else{
+            } else {
                 Log.e("purchased", false.toString())
                 val paymentRequest = JSONObject()
                 val paymentInitiator = JSONObject()
                 val amount = testSeriesSubjectList[position].amount.roundToInt() * 100
-                val description = "Purchase for "+testSeriesSubjectList[position].testSubject
+                val description = "Purchase for " + testSeriesSubjectList[position].testSubject
                 paymentInitiator.put("phoneNumber", phoneNumber)
                 paymentInitiator.put("courseId", courseId)
                 paymentInitiator.put("uid", userId)
                 paymentRequest.put("name", "ReetPrepAcademy")
-                paymentRequest.put("description",description )
+                paymentRequest.put("description", description)
                 paymentRequest.put("theme.color", "")
                 paymentRequest.put("currency", "INR")
                 paymentRequest.put("amount", amount)

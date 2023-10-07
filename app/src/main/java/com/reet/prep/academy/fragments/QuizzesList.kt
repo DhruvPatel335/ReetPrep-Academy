@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.QuizzesItemAdapter
 import com.reet.prep.academy.constants.Constants
@@ -26,7 +27,7 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
     private var testSeriesQuizzesList = mutableListOf<QuizModel>()
     private lateinit var quizzesItemAdapter: QuizzesItemAdapter
     private lateinit var subjectID: String
-    private lateinit var collectionId:String
+    private lateinit var collectionId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +48,27 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getTestSeriesQuizList.observe(viewLifecycleOwner) {
-            if (!viewModel.isTestSeriesSubjectsLoaded) {
-                testSeriesQuizzesList.addAll(it)
-                quizzesItemAdapter.notifyDataSetChanged()
-                viewModel.isTestSeriesSubjectsLoaded = true
+        viewModel.getTestSeriesQuizList.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+
+                    if (!viewModel.isTestSeriesSubjectsLoaded) {
+                        response.data?.let { testSeriesQuizzesList.addAll(it) }
+                        quizzesItemAdapter.notifyDataSetChanged()
+                        viewModel.isTestSeriesSubjectsLoaded = true
+                    }
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
             }
+
         }
         quizzesItemAdapter = QuizzesItemAdapter(requireContext(), testSeriesQuizzesList)
         binding.rvQuizzes.apply {
@@ -68,7 +84,7 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
         var bundle = bundleOf()
         bundle.putString(SUBJECT_DOCUMENT_ID, subjectID)
         bundle.putString(QUIZ_ID, testSeriesQuizzesList[position].id)
-        bundle.putString(QUIZ_TYPE_ID,collectionId)
+        bundle.putString(QUIZ_TYPE_ID, collectionId)
         findNavController().navigate(R.id.action_quizzesList_to_quizQuestions, bundle)
     }
 }

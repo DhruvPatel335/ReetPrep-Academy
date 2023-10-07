@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.constants.Constants
 import com.reet.prep.academy.databinding.FragmentQuizQuestionsBinding
@@ -21,7 +22,7 @@ class QuizQuestions : Fragment() {
     private lateinit var subjectID: String
     private lateinit var quizId: String
     private var position = 0
-    private lateinit var collectionId:String
+    private lateinit var collectionId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,7 @@ class QuizQuestions : Fragment() {
         subjectID = requireArguments().getString(Constants.SUBJECT_DOCUMENT_ID).toString()
         quizId = requireArguments().getString(Constants.QUIZ_ID).toString()
         collectionId = requireArguments().getString(Constants.QUIZ_TYPE_ID).toString()
-        viewModel.fetchTestSeriesQuestions(subjectID, quizId,collectionId)
+        viewModel.fetchTestSeriesQuestions(subjectID, quizId, collectionId)
 
     }
 
@@ -45,10 +46,25 @@ class QuizQuestions : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getTestSeriesQuestions.observe(viewLifecycleOwner) {
-            questionList.addAll(it)
-            loadQuestions(questionList[position])
-            Log.e("Questions", questionList.toString())
+        viewModel.getTestSeriesQuestions.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+
+                    response.data?.let { questionList.addAll(it) }
+                    loadQuestions(questionList[position])
+                    Log.e("Questions", questionList.toString())
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+            }
+
         }
 
         initClickListeners()
@@ -88,7 +104,7 @@ class QuizQuestions : Fragment() {
             }
         }
         binding.btnNext.setOnClickListener {
-            if (position < questionList.size-1) {
+            if (position < questionList.size - 1) {
                 reloadPage()
                 Log.e("Position", position.toString())
                 loadQuestions(questionList[++position])

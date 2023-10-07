@@ -4,31 +4,33 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.model.QuestionsModel
 import com.reet.prep.academy.model.QuizModel
 import com.reet.prep.academy.model.TestSubject
 
 class TestSeriesRepository {
     private val dbAuthors = Firebase.firestore
-    private var testSeriesSubjectLiveData: MutableLiveData<List<TestSubject>> = MutableLiveData()
-    private var testSeriesQuizNameLiveData: MutableLiveData<List<QuizModel>> = MutableLiveData()
-    private var testSeriesQuizQuestionsLiveData: MutableLiveData<List<QuestionsModel>> =
+    private var testSeriesSubjectLiveData: MutableLiveData<NetworkResult<List<TestSubject>>> = MutableLiveData()
+    private var testSeriesQuizNameLiveData: MutableLiveData<NetworkResult<List<QuizModel>>> = MutableLiveData()
+    private var testSeriesQuizQuestionsLiveData: MutableLiveData<NetworkResult<List<QuestionsModel>>> =
         MutableLiveData()
 
-    fun getTestSeriesSubjects(): MutableLiveData<List<TestSubject>> {
+    fun getTestSeriesSubjects(): MutableLiveData<NetworkResult<List<TestSubject>>> {
         return testSeriesSubjectLiveData
     }
 
-    fun getTestQuizNameSubjects(): MutableLiveData<List<QuizModel>> {
+    fun getTestQuizNameSubjects(): MutableLiveData<NetworkResult<List<QuizModel>>> {
         return testSeriesQuizNameLiveData
     }
 
-    fun getTestSeriesQuestions(): MutableLiveData<List<QuestionsModel>> {
+    fun getTestSeriesQuestions(): MutableLiveData<NetworkResult<List<QuestionsModel>>> {
         return testSeriesQuizQuestionsLiveData
     }
 
     fun fetchTestSeriesSubjects(collectionId: String) {
         var testSubject = mutableListOf<TestSubject>()
+        testSeriesSubjectLiveData.postValue(NetworkResult.Loading())
         dbAuthors.collection(collectionId)
             .get()
             .addOnSuccessListener { result ->
@@ -42,16 +44,18 @@ class TestSeriesRepository {
                         )
                     )
                 }
-                testSeriesSubjectLiveData.value = testSubject
+                testSeriesSubjectLiveData.value = NetworkResult.Success(testSubject)
                 Log.e("List", testSubject.toString())
             }
             .addOnFailureListener { exception ->
+                testSeriesSubjectLiveData.postValue(NetworkResult.Loading())
                 Log.w("TAG", "Error getting documents.", exception)
             }
     }
 
     fun fetchQuizNameList(documentId: String, collectionId: String) {
         var quizzes = mutableListOf<QuizModel>()
+        testSeriesQuizNameLiveData.postValue(NetworkResult.Loading())
         dbAuthors.collection(collectionId).document(documentId).collection("Quizzes")
             .get()
             .addOnSuccessListener { result ->
@@ -59,16 +63,18 @@ class TestSeriesRepository {
                     Log.e("DocumentId", document.id)
                     quizzes.add(QuizModel(document.id, document.data["Name"].toString()))
                 }
-                testSeriesQuizNameLiveData.value = quizzes
+                testSeriesQuizNameLiveData.value = NetworkResult.Success(quizzes)
                 Log.e("ListQuizzes", quizzes.toString())
             }
             .addOnFailureListener { exception ->
+                testSeriesQuizNameLiveData.postValue(NetworkResult.Failure(exception.message))
                 Log.w("TAG", "Error getting documents.", exception)
             }
     }
 
     fun fetchQuestions(subjectId: String, quizId: String, collectionId: String) {
         var quizzes = mutableListOf<QuestionsModel>()
+        testSeriesQuizQuestionsLiveData.postValue(NetworkResult.Loading())
         dbAuthors.collection(collectionId).document(subjectId).collection("Quizzes")
             .document(quizId).collection("Questions")
             .get()
@@ -86,10 +92,11 @@ class TestSeriesRepository {
                         )
                     )
                 }
-                testSeriesQuizQuestionsLiveData.value = quizzes
+                testSeriesQuizQuestionsLiveData.value = NetworkResult.Success(quizzes)
                 Log.e("ListQuizzes", quizzes.toString())
             }
             .addOnFailureListener { exception ->
+                testSeriesQuizQuestionsLiveData.postValue(NetworkResult.Failure(exception.message))
                 Log.w("TAG", "Error getting documents.", exception)
             }
     }
