@@ -79,7 +79,11 @@
     <fragment
         android:id="@+id/quizQuestions"
         android:name="com.reet.prep.academy.fragments.QuizQuestions"
-        android:label="QuizQuestions" />
+        android:label="QuizQuestions" >
+        <action
+            android:id="@+id/action_quizQuestions_to_quizResult"
+            app:destination="@id/quizResult" />
+    </fragment>
     <fragment
         android:id="@+id/courseContents"
         android:name="com.reet.prep.academy.fragments.CourseContents"
@@ -100,4 +104,8 @@
         android:id="@+id/playVideo"
         android:name="com.reet.prep.academy.fragments.PlayVideo"
         android:label="PlayVideo" />
+    <fragment
+        android:id="@+id/quizResult"
+        android:name="com.reet.prep.academy.fragments.QuizResult"
+        android:label="QuizResult" />
 </navigation>

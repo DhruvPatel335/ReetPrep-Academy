@@ -21,7 +21,9 @@ class TestSeriesViewModel : ViewModel() {
     var isTestSeriesLoaded = false
     var isTestSeriesSubjectsLoaded = false
     var isQuestionsLoaded = false
-
+    var questionAttempted = 0
+    var questionCorrect = 0
+    var questionsIncorrect = 0
     init {
         testSeriesSubjectLiveData = testSeriesRepository.getTestSeriesSubjects()
         testSeriesQuizListLiveData = testSeriesRepository.getTestQuizNameSubjects()

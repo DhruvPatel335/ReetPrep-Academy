@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.QuizResult">
+
+        <TextView
+            android:id="@+id/tvQuizTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:text="Your performance from the test"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/horizontalGuideline" />
+
+        <ImageView
+            android:id="@+id/ivQuizIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/icon_score"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvQuizTitle" />
+
+        <TextView
+            android:id="@+id/tvCongratulations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Congratulations you are making progress!!"
+            app:layout_constraintTop_toBottomOf="@id/ivQuizIcon" />
+
+        <TextView
+            android:id="@+id/tvAttemptedQuestionsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Attempted"
+            app:layout_constraintStart_toEndOf="@id/verticalGuideline"
+            app:layout_constraintTop_toBottomOf="@id/tvCongratulations" />
+
+
+        <TextView
+            android:id="@+id/tvAttemptedQuestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toEndOf="@id/barrierTitles"
+            app:layout_constraintTop_toBottomOf="@id/tvCongratulations" />
+
+        <TextView
+            android:id="@+id/tvCorrectQuestionsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correct"
+            app:layout_constraintStart_toStartOf="@id/tvAttemptedQuestionsTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvAttemptedQuestionsTitle" />
+
+        <TextView
+            android:id="@+id/tvCorrectQuestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@id/barrierTitles"
+            app:layout_constraintTop_toBottomOf="@id/tvAttemptedQuestions"
+            app:layout_constraintTop_toTopOf="@id/tvCorrectQuestionsTitle" />
+
+        <TextView
+            android:id="@+id/tvInCorrectQuestionsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Incorrect"
+            app:layout_constraintStart_toStartOf="@id/tvAttemptedQuestionsTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvCorrectQuestionsTitle" />
+
+        <TextView
+            android:id="@+id/tvInCorrectQuestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@id/barrierTitles"
+            app:layout_constraintTop_toTopOf="@id/tvInCorrectQuestionsTitle" />
+
+        <TextView
+            android:id="@+id/tvTotalQuestionsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Questions"
+            app:layout_constraintStart_toStartOf="@id/tvAttemptedQuestionsTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvInCorrectQuestionsTitle" />
+
+        <TextView
+            android:id="@+id/tvTotalQuestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@id/barrierTitles"
+            app:layout_constraintTop_toTopOf="@id/tvTotalQuestionsTitle" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierTitles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierAllowsGoneWidgets="true"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="tvTotalQuestionsTitle,tvAttemptedQuestions,tvCorrectQuestionsTitle,tvInCorrectQuestionsTitle" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.20" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontalGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
