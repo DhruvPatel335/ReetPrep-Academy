@@ -86,6 +86,7 @@ class QuizQuestions : Fragment() {
             } else {
                 binding.btnOptionA.setBackgroundResource(R.drawable.incorrect_and_border)
                 viewModel.questionsIncorrect++
+                viewModel.questionAttempted++
                 highlightCorrectOption()
             }
         }
@@ -97,6 +98,7 @@ class QuizQuestions : Fragment() {
             } else {
                 binding.btnOptionB.setBackgroundResource(R.drawable.incorrect_and_border)
                 viewModel.questionsIncorrect++
+                viewModel.questionAttempted++
                 highlightCorrectOption()
             }
         }
@@ -108,6 +110,7 @@ class QuizQuestions : Fragment() {
             } else {
                 binding.btnOptionC.setBackgroundResource(R.drawable.incorrect_and_border)
                 viewModel.questionsIncorrect++
+                viewModel.questionAttempted++
                 highlightCorrectOption()
             }
         }
@@ -119,6 +122,7 @@ class QuizQuestions : Fragment() {
             } else {
                 binding.btnOptionD.setBackgroundResource(R.drawable.incorrect_and_border)
                 viewModel.questionsIncorrect++
+                viewModel.questionAttempted++
                 highlightCorrectOption()
             }
         }
