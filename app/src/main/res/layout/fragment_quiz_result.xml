@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/quiz_result_background"
         tools:context=".fragments.QuizResult">
 
         <TextView
@@ -15,6 +16,7 @@
             android:layout_margin="15dp"
             android:gravity="center"
             android:text="Your performance from the test"
+            android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/horizontalGuideline" />
@@ -34,6 +36,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Congratulations you are making progress!!"
+            android:textColor="@color/white"
+            android:textStyle="italic"
             app:layout_constraintTop_toBottomOf="@id/ivQuizIcon" />
 
         <TextView
@@ -42,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="Attempted"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/verticalGuideline"
             app:layout_constraintTop_toBottomOf="@id/tvCongratulations" />
 
@@ -52,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/barrierTitles"
             app:layout_constraintTop_toBottomOf="@id/tvCongratulations" />
 
@@ -59,7 +65,9 @@
             android:id="@+id/tvCorrectQuestionsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Correct"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@id/tvAttemptedQuestionsTitle"
             app:layout_constraintTop_toBottomOf="@id/tvAttemptedQuestionsTitle" />
 
@@ -68,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/barrierTitles"
             app:layout_constraintTop_toBottomOf="@id/tvAttemptedQuestions"
             app:layout_constraintTop_toTopOf="@id/tvCorrectQuestionsTitle" />
@@ -76,7 +85,9 @@
             android:id="@+id/tvInCorrectQuestionsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Incorrect"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@id/tvAttemptedQuestionsTitle"
             app:layout_constraintTop_toBottomOf="@id/tvCorrectQuestionsTitle" />
 
@@ -85,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/barrierTitles"
             app:layout_constraintTop_toTopOf="@id/tvInCorrectQuestionsTitle" />
 
@@ -92,7 +104,9 @@
             android:id="@+id/tvTotalQuestionsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Total Questions"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@id/tvAttemptedQuestionsTitle"
             app:layout_constraintTop_toBottomOf="@id/tvInCorrectQuestionsTitle" />
 
@@ -101,6 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/barrierTitles"
             app:layout_constraintTop_toTopOf="@id/tvTotalQuestionsTitle" />
 

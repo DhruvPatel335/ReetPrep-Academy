@@ -74,7 +74,8 @@
         android:label="QuizzesList" >
         <action
             android:id="@+id/action_quizzesList_to_quizQuestions"
-            app:destination="@id/quizQuestions" />
+            app:destination="@id/quizQuestions"
+            app:popUpTo="@id/quizzesList"/>
     </fragment>
     <fragment
         android:id="@+id/quizQuestions"
@@ -82,7 +83,8 @@
         android:label="QuizQuestions" >
         <action
             android:id="@+id/action_quizQuestions_to_quizResult"
-            app:destination="@id/quizResult" />
+            app:destination="@id/quizResult"
+            app:popUpTo="@id/quizzesList"/>
     </fragment>
     <fragment
         android:id="@+id/courseContents"
@@ -107,5 +109,6 @@
     <fragment
         android:id="@+id/quizResult"
         android:name="com.reet.prep.academy.fragments.QuizResult"
-        android:label="QuizResult" />
+        android:label="QuizResult"
+        />
 </navigation>
