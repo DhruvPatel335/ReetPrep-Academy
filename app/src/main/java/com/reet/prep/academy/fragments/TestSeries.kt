@@ -100,7 +100,11 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
             var bundle = bundleOf()
             bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
             bundle.putString(QUIZ_TYPE_ID, collectionId)
-            findNavController().navigate(R.id.action_testSeries_to_quizzesList, bundle)
+            (activity as MainActivity).safeNavigate(
+                findNavController(),
+                R.id.action_testSeries_to_quizzesList,
+                bundle
+            )
         }
     }
 
@@ -111,7 +115,11 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
                 var bundle = bundleOf()
                 bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
                 bundle.putString(QUIZ_TYPE_ID, collectionId)
-                findNavController().navigate(R.id.action_testSeries_to_quizzesList, bundle)
+                (activity as MainActivity).safeNavigate(
+                    findNavController(),
+                    R.id.action_testSeries_to_quizzesList,
+                    bundle
+                )
             } else {
                 Log.e("purchased", false.toString())
                 val paymentRequest = JSONObject()

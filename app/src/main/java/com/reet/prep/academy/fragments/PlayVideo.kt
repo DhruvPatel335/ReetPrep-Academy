@@ -31,6 +31,7 @@ class PlayVideo : Fragment() {
         arguments?.let {
             param1 = it.getString("key")
         }
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
         player = ExoPlayer.Builder(requireContext()).build()
     }
 
@@ -39,7 +40,6 @@ class PlayVideo : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPlayVideoBinding.inflate(inflater, container, false)
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
         return binding.root
     }
 

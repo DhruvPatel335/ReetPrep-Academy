@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.reet.prep.academy.MainActivity
 import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.QuizzesItemAdapter
@@ -85,6 +86,10 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
         bundle.putString(SUBJECT_DOCUMENT_ID, subjectID)
         bundle.putString(QUIZ_ID, testSeriesQuizzesList[position].id)
         bundle.putString(QUIZ_TYPE_ID, collectionId)
-        findNavController().navigate(R.id.action_quizzesList_to_quizQuestions, bundle)
+        (activity as MainActivity).safeNavigate(
+            findNavController(),
+            R.id.action_quizzesList_to_quizQuestions,
+            bundle
+        )
     }
 }

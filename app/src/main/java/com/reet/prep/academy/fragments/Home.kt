@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.reet.prep.academy.MainActivity
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.SlideAdapter
 import com.reet.prep.academy.constants.Constants.Companion.DAILY_QUIZZES
@@ -108,16 +109,28 @@ class Home : Fragment() {
 
     private fun initClickListeners() {
         binding.ilCurrentAffair.root.setOnClickListener {
-            findNavController().navigate(R.id.action_homeNavigation_to_currentAffairNavigation)
+            (activity as MainActivity).safeNavigate(
+                findNavController(),
+                R.id.action_homeNavigation_to_currentAffairNavigation
+            )
         }
         binding.ilCourseTab.root.setOnClickListener {
-            findNavController().navigate(R.id.action_homeNavigation_to_courses)
+            (activity as MainActivity).safeNavigate(
+                findNavController(),
+                R.id.action_homeNavigation_to_courses
+            )
         }
         binding.ilDailyQuiz.root.setOnClickListener {
-            findNavController().navigate(R.id.action_homeNavigation_to_testSeries, bundleOf(QUIZ_TYPE_ID to DAILY_QUIZZES))
+            (activity as MainActivity).safeNavigate(
+                findNavController(),
+                R.id.action_homeNavigation_to_testSeries, bundleOf(QUIZ_TYPE_ID to DAILY_QUIZZES)
+            )
         }
         binding.ilTestSeries.root.setOnClickListener {
-            findNavController().navigate(R.id.action_homeNavigation_to_testSeries, bundleOf(QUIZ_TYPE_ID to TEST_SERIES))
+            (activity as MainActivity).safeNavigate(
+                findNavController(),
+                R.id.action_homeNavigation_to_testSeries, bundleOf(QUIZ_TYPE_ID to TEST_SERIES)
+            )
         }
     }
 

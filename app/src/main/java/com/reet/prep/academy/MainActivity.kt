@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         NavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.myProfile -> {
-                    navController.navigate(R.id.action_homeNavigation_to_myProfile)
+                    safeNavigate(navController,R.id.action_homeNavigation_to_myProfile)
                     drawer.close()
                 }
 
@@ -143,6 +143,11 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         checkout.open(this, jsonObject)
     }
 
+    fun safeNavigate(navController: NavController, direction: Int, bundle: Bundle? = null) {
+        navController.currentDestination?.getAction(direction)?.run {
+            navController.navigate(direction, bundle)
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {

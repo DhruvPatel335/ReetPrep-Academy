@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.reet.prep.academy.MainActivity
 import com.reet.prep.academy.NetworkResult
 import com.reet.prep.academy.R
 import com.reet.prep.academy.adapter.VideoModelAdapter
@@ -84,8 +85,8 @@ class CourseVideos : Fragment(), VideoModelAdapter.OnItemClickListener {
 
     override fun onClick(position: Int) {
         Log.e("clicked", "true")
-        findNavController().navigate(
-            R.id.action_courseContents_to_playVideo,
+        (activity as MainActivity).safeNavigate(
+            findNavController(), R.id.action_courseContents_to_playVideo,
             bundleOf("key" to videoList[position].videoUrl)
         )
     }

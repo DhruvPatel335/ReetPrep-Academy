@@ -102,7 +102,7 @@ class Courses : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
                     Constants.SUBJECT_DOCUMENT_ID,
                     coursesSubjectLiveData[position].documentId
                 )
-                findNavController().navigate(R.id.action_courses_to_courseContents, bundle)
+                (activity as MainActivity).safeNavigate(findNavController(),R.id.action_courses_to_courseContents, bundle)
             } else {
                 Log.e("purchased", false.toString())
                 val paymentRequest = JSONObject()
