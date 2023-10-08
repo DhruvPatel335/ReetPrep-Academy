@@ -16,7 +16,7 @@
             android:id="@+id/ivBrandImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/brand_icon"
+            android:src="@mipmap/ic_launcher"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guidelineVertical15" />

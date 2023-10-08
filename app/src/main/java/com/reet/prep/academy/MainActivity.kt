@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         phoneNumber = paymentInitiator.getString("phoneNumber")
         val checkout: Checkout = Checkout()
         checkout.setKeyID("rzp_test_JQHZQjLCC0MGLN")
-        checkout.setImage(R.drawable.brand_icon);
+        checkout.setImage(R.mipmap.ic_launcher);
         checkout.open(this, jsonObject)
     }
 
