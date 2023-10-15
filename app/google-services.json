@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "894389782041",
-    "project_id": "reetprep-academy-7b5f1",
-    "storage_bucket": "reetprep-academy-7b5f1.appspot.com"
+    "project_number": "496015404251",
+    "project_id": "reetprep-academy-a3cb9",
+    "storage_bucket": "reetprep-academy-a3cb9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:894389782041:android:1d619363ebef30d44d4c88",
+        "mobilesdk_app_id": "1:496015404251:android:0490be55ea415a930bb0fe",
         "android_client_info": {
           "package_name": "com.reet.prep.academy"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD2ZWbmiaW3pKSJyupgIM2BfjSig6cL9Wk"
+          "current_key": "AIzaSyCHNDESpaJhS5mrrZN3wDhxZYC_tBA32b4"
         }
       ],
       "services": {
