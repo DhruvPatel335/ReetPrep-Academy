@@ -11,5 +11,6 @@ class Constants {
         const val CORRECT_QUESTIONS = "correct"
         const val INCORRECT_QUESTIONS = "in_correct"
         const val TOTAL_QUESTIONS = "total_questions"
+        const val VERIFICATION_ID = "VERIFICATION_ID"
     }
 }

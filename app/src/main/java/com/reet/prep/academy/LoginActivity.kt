@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -27,11 +29,10 @@ import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var storedVerificationId: String
-    private lateinit var resendToken:
-            PhoneAuthProvider.ForceResendingToken
-    private lateinit var credential: PhoneAuthCredential
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var navController: NavController
+    companion object {
+        lateinit var mAuth: FirebaseAuth
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -42,111 +43,18 @@ class LoginActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        val navHostFragment = supportFragmentManager.findFragmentById(
+            com.reet.prep.academy.R.id.nav_host_fragment_content_main
+        ) as NavHostFragment
+        navController = navHostFragment.navController
     }
 
     override fun onStart() {
         super.onStart()
-        val user:FirebaseUser? = mAuth.currentUser
-        if (user!=null){
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-        binding.btnGetOtp.setOnClickListener {
-            initiateOtp()
-        }
-        binding.btnSignIn.setOnClickListener {
 
-            if (this::storedVerificationId.isInitialized) {
-                credential =
-                    PhoneAuthProvider.getCredential(
-                        storedVerificationId,
-                        binding.etOTP.text.toString()
-                    )
-                signInWithPhoneAuthCredential(credential)
-            }
-        }
 
     }
 
-    private fun initiateOtp() {
-        binding.tvError.visibility = View.GONE
-        binding.pbOtpProgressBar.visibility = View.VISIBLE
-        val options = PhoneAuthOptions.newBuilder(mAuth)
-            .setPhoneNumber("+91" + binding.etPhoneNumber.text.toString())
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(this@LoginActivity)
-            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    Log.d(TAG, "onVerificationCompleted:$credential")
-                    signInWithPhoneAuthCredential(credential)
-                }
-
-                override fun onVerificationFailed(e: FirebaseException) {
-                    Log.w(TAG, "onVerificationFailed", e)
-
-                    when (e) {
-                        is FirebaseAuthInvalidCredentialsException -> {
-                            binding.tvError.text = "Enter correct mobile number"
-                        }
-
-                        is FirebaseTooManyRequestsException -> {
-                            binding.tvError.text = e.message
-                        }
-
-                        is FirebaseAuthMissingActivityForRecaptchaException -> {
-                            binding.tvError.text = e.message
-                        }
-
-                        else -> {
-                            binding.tvError.text = e.message
-                        }
-                    }
-                    binding.tvError.visibility = View.VISIBLE
-                    binding.pbOtpProgressBar.visibility = View.GONE
-                }
-
-                override fun onCodeSent(
-                    verificationId: String,
-                    token: PhoneAuthProvider.ForceResendingToken
-                ) {
-                    binding.tvError.visibility = View.GONE
-                    binding.pbOtpProgressBar.visibility = View.GONE
-                    Log.d(TAG, "onCodeSent:$verificationId")
-                    Toast.makeText(this@LoginActivity, "Otp sent", Toast.LENGTH_SHORT).show()
-                    storedVerificationId = verificationId
-                    resendToken = token
-                }
-            })
-            .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
-    }
-
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this@LoginActivity) { task ->
-                if (task.isSuccessful) {
-                    binding.tvError.visibility = View.GONE
-                    Log.d(TAG, "signInWithCredential:success")
-                    binding.pbOtpProgressBar.visibility = View.GONE
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    Toast.makeText(this@LoginActivity, "Logged In", Toast.LENGTH_SHORT).show()
-                } else {
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        binding.tvError.text =
-                            (task.exception as FirebaseAuthInvalidCredentialsException).message
-                        binding.tvError.visibility = View.VISIBLE
-                        binding.pbOtpProgressBar.visibility = View.VISIBLE
-                    }
-                }
-            }
-    }
-
-    companion object {
-        private val TAG = LoginActivity::class.java.simpleName
-    }
 }

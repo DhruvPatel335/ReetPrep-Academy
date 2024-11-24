@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.login.VerifyOtpFragment">
+
+        <ImageView
+            android:id="@+id/ivCompanyLogo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guidelineHorizontal10" />
+
+        <TextView
+            android:id="@+id/tvVerifyOtp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verify OTP"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivCompanyLogo" />
+
+        <TextView
+            android:id="@+id/tvOtpSentTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Please check your messages for the otp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvVerifyOtp" />
+
+        <LinearLayout
+            android:id="@+id/codeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="50dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tvOtpSentTo">
+
+            <EditText
+                android:id="@+id/digit1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_otp_border"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:maxLines="1"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/digit2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_otp_border"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:maxLines="1"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/digit3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_otp_border"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:maxLines="1"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/digit4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_otp_border"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:maxLines="1"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/digit5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_otp_border"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:maxLines="1"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/digit6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_otp_border"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:maxLines="1"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnStartNow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/edit_text_rounded_border"
+            android:includeFontPadding="false"
+            android:text="Verify OTP"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvDidntReceiveOTP" />
+
+        <TextView
+            android:id="@+id/tvDidntReceiveOTP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Did not receive OTP? "
+            app:layout_constraintBottom_toTopOf="@id/guidelineHorizontal90"
+            app:layout_constraintEnd_toStartOf="@id/tvRequestAgain"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvRequestAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Request Again"
+            android:textColor="#E10527"
+            app:layout_constraintBottom_toBottomOf="@id/tvDidntReceiveOTP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvDidntReceiveOTP"
+            app:layout_constraintTop_toTopOf="@id/tvDidntReceiveOTP" />
+
+        <ProgressBar
+            android:id="@+id/pbLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progressDrawable="@color/black"
+            android:progressTint="@color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHorizontal10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHorizontal90"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90" />
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="#CD0000"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/codeLayout" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pbOtpProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/codeLayout"
+            app:showAnimationBehavior="outward" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
