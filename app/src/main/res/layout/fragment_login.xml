@@ -13,11 +13,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Log In"
+            android:textColor="@color/brand_dark_blue"
             android:textSize="36sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/guidelineVertical15"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guidelineVertical15" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tvWelcomeLogin"
@@ -36,8 +37,9 @@
             android:id="@+id/etPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/edit_text_rounded_border"
             android:drawablePadding="10dp"
             android:hint="Mobile Number"
@@ -45,36 +47,14 @@
             android:paddingStart="20dp"
             app:layout_constraintTop_toBottomOf="@id/tvWelcomeLogin" />
 
-        <!--        <EditText-->
-        <!--            android:id="@+id/etOTP"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="10dp"-->
-        <!--            android:layout_marginTop="15dp"-->
-        <!--            android:hint="Enter OTP"-->
-        <!--            android:paddingStart="35dp"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/tvError"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/etPhoneNumber" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tvError"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="10dp"-->
-        <!--            android:textColor="#CD0000"-->
-        <!--            android:textSize="12sp"-->
-        <!--            android:visibility="gone"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/btnGetOtp"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/etOTP" />-->
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGetOtp"
+            style="@style/myMaterialButton"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/blue_brand_color"
-            android:text="Get Otp"
             android:background="@drawable/edit_text_rounded_border"
+            android:text="Get Otp"
             app:layout_constraintEnd_toEndOf="@+id/etPhoneNumber"
             app:layout_constraintStart_toStartOf="@+id/etPhoneNumber"
             app:layout_constraintTop_toBottomOf="@id/etPhoneNumber"
@@ -114,6 +94,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSignUpGoogle"
+            style="@style/myMaterialButton"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -127,11 +108,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSignUpMicrosoft"
+            style="@style/myMaterialButton"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/edit_text_rounded_border"
             android:text="Sign up with Microsoft"
             android:textSize="16sp"
@@ -142,11 +124,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSignUpTwitter"
+            style="@style/myMaterialButton"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="16dp"            android:background="@drawable/edit_text_rounded_border"
+            android:background="@drawable/edit_text_rounded_border"
             android:text="Sign up with Twitter"
             android:textSize="16sp"
             app:icon="@drawable/twitter_icon"
@@ -172,7 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.12" />
+            app:layout_constraintGuide_percent="0.16" />
 
         <TextView
             android:id="@+id/tvError"
@@ -189,10 +173,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            app:showAnimationBehavior="outward"
             android:indeterminate="true"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/btnGetOtp" />
+            app:layout_constraintTop_toBottomOf="@id/btnGetOtp"
+            app:showAnimationBehavior="outward" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

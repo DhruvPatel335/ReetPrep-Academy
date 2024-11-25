@@ -39,8 +39,7 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+                        android:background="@color/brand_dark_blue"
                         android:minHeight="?attr/actionBarSize"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +60,7 @@
                         android:text="ReetPrep Academy"
                         android:textStyle="bold"
                         android:textSize="24sp"
+                        android:textColor="@color/white"
                         app:layout_constraintHorizontal_bias="0.1"
                         app:layout_constraintStart_toEndOf="@+id/ivMenu"
                         app:layout_constraintTop_toTopOf="parent"
@@ -98,7 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/main_menu" />
+            app:menu="@menu/main_menu"
+            style="@style/Widget.App.BottomNavigationView"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

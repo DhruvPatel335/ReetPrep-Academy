@@ -33,7 +33,7 @@
             android:id="@+id/tvQuestion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/question_background"
+            android:background="@android:color/transparent"
             android:text="Questions"
             android:textColor="@color/black"
             android:textSize="25sp"

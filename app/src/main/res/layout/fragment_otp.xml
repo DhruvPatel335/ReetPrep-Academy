@@ -23,6 +23,8 @@
             android:layout_height="wrap_content"
             android:text="Verify OTP"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/brand_dark_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivCompanyLogo" />
@@ -128,7 +130,7 @@
 
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStartNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -139,6 +141,7 @@
             android:background="@drawable/edit_text_rounded_border"
             android:includeFontPadding="false"
             android:text="Verify OTP"
+            style="@style/myMaterialButton"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
