@@ -104,7 +104,7 @@ class PlayVideo : Fragment() {
     }
 
     private fun showSystemUi() {
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
         (activity as MainActivity).binding.ablAppBar.visibility = View.VISIBLE
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
@@ -114,7 +114,7 @@ class PlayVideo : Fragment() {
         ).let { controller ->
             controller.show(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+                WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
         }
     }
 
