@@ -2,6 +2,7 @@ package com.reet.prep.academy.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.reet.prep.academy.NetworkResult
@@ -58,7 +59,7 @@ class CoursesRepository {
     fun fetchCourseVideos(courseId: String) {
         var videos = mutableListOf<VideoModel>()
         courseVideoLiveData.postValue(NetworkResult.Loading())
-        dbAuthors.collection("courses").document(courseId).collection("video")
+        dbAuthors.collection("courses").document(courseId).collection("video").orderBy("sno", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
