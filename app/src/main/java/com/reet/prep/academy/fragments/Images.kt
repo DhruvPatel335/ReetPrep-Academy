@@ -1,14 +1,12 @@
 package com.reet.prep.academy.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.reet.prep.academy.NetworkResult
-import com.reet.prep.academy.R
 import com.reet.prep.academy.VerticalViewPager
 import com.reet.prep.academy.adapter.CurrentAffairImageAdapter
 import com.reet.prep.academy.databinding.FragmentImagesBinding
@@ -24,38 +22,28 @@ class Images : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactory())[CurrentAffairViewModel::class.java]
-        viewModel.fetchCurrentAffairImages()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        binding = FragmentImagesBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewPager = binding.idVerticalViewPager
+        if (!viewModel.isImagesLoaded) {
+            viewModel.fetchCurrentAffairImages()
+        }
         currentAffairImageAdapter = CurrentAffairImageAdapter(requireContext(), sliderItems)
-        viewPager.adapter = currentAffairImageAdapter
-        viewModel.getCurrentAffairImages.observe(viewLifecycleOwner) {response->
-            when(response){
-                is NetworkResult.Success->{
-                    if (!viewModel.isImagesLoaded){
-                        binding.pbProgressBar.visibility = View.GONE
-                        response.data?.let { sliderItems.addAll(it) }
-                        viewModel.isImagesLoaded = true
-                        currentAffairImageAdapter.notifyDataSetChanged()
-                    }
-                }
-                is NetworkResult.Loading->{
-                    binding.pbProgressBar.visibility = View.VISIBLE
+        initLivedataObservers()
+    }
 
+    private fun initLivedataObservers() {
+        viewModel.getCurrentAffairImages.observe(this) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+                    response.data?.let { sliderItems.addAll(it) }
+                    viewModel.isImagesLoaded = true
+                    currentAffairImageAdapter.notifyDataSetChanged()
                 }
-                is NetworkResult.Failure->{
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
                     binding.pbProgressBar.visibility = View.VISIBLE
 
                 }
@@ -63,5 +51,17 @@ class Images : Fragment() {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentImagesBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewPager = binding.idVerticalViewPager
+        viewPager.adapter = currentAffairImageAdapter
+    }
 }

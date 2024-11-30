@@ -31,7 +31,6 @@ import org.json.JSONObject
 import kotlin.math.roundToInt
 
 class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
-    private val dbAuthors = Firebase.firestore
     private lateinit var binding: FragmentTestSeriesBinding
     private lateinit var viewModel: TestSeriesViewModel
     private var testSeriesSubjectList = mutableListOf<TestSubject>()
@@ -45,29 +44,21 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
         phoneNumber = user.phoneNumber.toString()
         viewModel = ViewModelProvider(this, ViewModelFactory())[TestSeriesViewModel::class.java]
         collectionId = arguments?.getString(Constants.QUIZ_TYPE_ID)!!
-        viewModel.fetchTestSeriesSubjectLiveData(collectionId)
+        if (!viewModel.isTestSeriesLoaded) {
+            viewModel.fetchTestSeriesSubjectLiveData(collectionId)
+        }
+        testSeriesSubjectAdapter = TestSeriesSubjectAdapter(requireContext(), testSeriesSubjectList)
+        initLiveDataObservers()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        binding = FragmentTestSeriesBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.getTestSeriesSubjectLiveData.observe(viewLifecycleOwner) { response ->
+    private fun initLiveDataObservers() {
+        viewModel.getTestSeriesSubjectLiveData.observe(this) { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    if (!viewModel.isTestSeriesLoaded) {
-                        binding.pbProgressBar.visibility = View.GONE
-                        response.data?.let { testSeriesSubjectList.addAll(it) }
-                        testSeriesSubjectAdapter.notifyDataSetChanged()
-                        viewModel.isTestSeriesLoaded = true
-                    }
+                    binding.pbProgressBar.visibility = View.GONE
+                    response.data?.let { testSeriesSubjectList.addAll(it) }
+                    testSeriesSubjectAdapter.notifyDataSetChanged()
+                    viewModel.isTestSeriesLoaded = true
                 }
 
                 is NetworkResult.Loading -> {
@@ -80,7 +71,19 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
             }
 
         }
-        testSeriesSubjectAdapter = TestSeriesSubjectAdapter(requireContext(), testSeriesSubjectList)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentTestSeriesBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.rvTestSeriesSubjects.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -96,7 +99,6 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
         if (collectionId == TEST_SERIES) {
             checkForPurchase(courseId, userId, position)
         } else {
-            Log.e("purchased", true.toString())
             var bundle = bundleOf()
             bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
             bundle.putString(QUIZ_TYPE_ID, collectionId)
@@ -111,7 +113,6 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
     private fun checkForPurchase(courseId: String, userId: String, position: Int) {
         viewModel.isCoursePurchased(courseId, userId) { isCoursePurchased ->
             if (isCoursePurchased) {
-                Log.e("purchased", true.toString())
                 var bundle = bundleOf()
                 bundle.putString(SUBJECT_DOCUMENT_ID, testSeriesSubjectList[position].documentId)
                 bundle.putString(QUIZ_TYPE_ID, collectionId)
@@ -121,7 +122,6 @@ class TestSeries : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
                     bundle
                 )
             } else {
-                Log.e("purchased", false.toString())
                 val paymentRequest = JSONObject()
                 val paymentInitiator = JSONObject()
                 val amount = testSeriesSubjectList[position].amount.roundToInt() * 100

@@ -28,7 +28,32 @@ class PDFs : Fragment(), CurrentAffairPdfAdapter.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactory())[CurrentAffairViewModel::class.java]
-        viewModel.fetchCurrentAffairPds()
+        if (!viewModel.isPdfsLoaded) {
+            viewModel.fetchCurrentAffairPds()
+        }
+        pdfAdapter = CurrentAffairPdfAdapter(requireContext(), pdfListLiveData)
+        initLiveDataObservers()
+    }
+
+    private fun initLiveDataObservers() {
+        viewModel.getCurrentAffairPdfs.observe(this) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+                    response.data?.let { pdfListLiveData.addAll(it) }
+                    pdfAdapter.notifyDataSetChanged()
+                    viewModel.isPdfsLoaded = true
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -42,33 +67,10 @@ class PDFs : Fragment(), CurrentAffairPdfAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCurrentAffairPdfs.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    if (!viewModel.isPdfsLoaded) {
-                        binding.pbProgressBar.visibility = View.GONE
-                        response.data?.let { pdfListLiveData.addAll(it) }
-                        pdfAdapter.notifyDataSetChanged()
-                        viewModel.isPdfsLoaded = true
-                    }
-                }
-
-                is NetworkResult.Loading -> {
-                    binding.pbProgressBar.visibility = View.VISIBLE
-                }
-
-                is NetworkResult.Failure -> {
-                    binding.pbProgressBar.visibility = View.VISIBLE
-                }
-            }
-
-
-        }
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
-        pdfAdapter = CurrentAffairPdfAdapter(requireContext(), pdfListLiveData)
         binding.rvPdfs.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvPdfs.adapter = pdfAdapter

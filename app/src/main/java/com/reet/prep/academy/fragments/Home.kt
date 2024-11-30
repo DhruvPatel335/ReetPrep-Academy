@@ -109,10 +109,7 @@ class Home : Fragment() {
 
     private fun initClickListeners() {
         binding.ilCurrentAffair.root.setOnClickListener {
-            (activity as MainActivity).safeNavigate(
-                findNavController(),
-                R.id.action_homeNavigation_to_currentAffairNavigation
-            )
+            (context as MainActivity).bottomNavigationView.findViewById<View>(R.id.currentAffairNavigation).performClick()
         }
         binding.ilCourseTab.root.setOnClickListener {
             (activity as MainActivity).safeNavigate(

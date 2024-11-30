@@ -40,8 +40,38 @@ class Courses : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
         super.onCreate(savedInstanceState)
         user = FirebaseAuth.getInstance().currentUser!!
         phoneNumber = user.phoneNumber.toString()
-        viewModel = ViewModelProvider(this, ViewModelFactory())[CoursesViewModel::class.java]
-        viewModel.fetchCoursesSubjects()
+        viewModel = ViewModelProvider(this@Courses, ViewModelFactory())[CoursesViewModel::class.java]
+        if (!viewModel.isCourseLoaded){
+            viewModel.fetchCoursesSubjects()
+        }
+        testSeriesSubjectAdapter =
+            TestSeriesSubjectAdapter(requireContext(), coursesSubjectLiveData)
+        initObserver()
+    }
+
+    private fun initObserver() {
+        coursesSubjectLiveData.clear()
+        viewModel.getCoursesSubjectLiveData.observe(this) {
+            when (it) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+                    it.data?.let { it1 -> coursesSubjectLiveData.addAll(it1) }
+                    testSeriesSubjectAdapter.notifyDataSetChanged()
+                    viewModel.isCourseLoaded = true
+                    Log.e("NetworkResult", "Success")
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                    Log.e("NetworkResult", "loading")
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                    Log.e("NetworkResult", "Failure")
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -53,42 +83,24 @@ class Courses : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        viewModel.getCoursesSubjectLiveData.observe(viewLifecycleOwner) {
-            if (!viewModel.isCourseLoaded) {
-                when (it) {
-                    is NetworkResult.Success -> {
-                        binding.pbProgressBar.visibility = View.GONE
-                        it.data?.let { it1 -> coursesSubjectLiveData.addAll(it1) }
-                        testSeriesSubjectAdapter.notifyDataSetChanged()
-                        viewModel.isCourseLoaded = true
-                        Log.e("NetworkResult", "Success")
-                    }
-                    is NetworkResult.Loading->{
-                        binding.pbProgressBar.visibility = View.VISIBLE
-                        Log.e("NetworkResult", "loading")
-                    }
-                    is NetworkResult.Failure->{
-                        binding.pbProgressBar.visibility = View.VISIBLE
-                        Log.e("NetworkResult", "Failure")
-                    }
-                }
-
-            }
-        }
     }
 
     private fun initRecyclerView() {
-        testSeriesSubjectAdapter =
-            TestSeriesSubjectAdapter(requireContext(), coursesSubjectLiveData)
+
         binding.rvCourseSubjects.apply {
             layoutManager =
                 GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
             adapter = testSeriesSubjectAdapter
         }
         testSeriesSubjectAdapter.setOnItemClickListener(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 
     override fun onClick(position: Int) {
@@ -102,7 +114,11 @@ class Courses : Fragment(), TestSeriesSubjectAdapter.OnItemClickListener {
                     Constants.SUBJECT_DOCUMENT_ID,
                     coursesSubjectLiveData[position].documentId
                 )
-                (activity as MainActivity).safeNavigate(findNavController(),R.id.action_courses_to_courseContents, bundle)
+                (activity as MainActivity).safeNavigate(
+                    findNavController(),
+                    R.id.action_courses_to_courseContents,
+                    bundle
+                )
             } else {
                 Log.e("purchased", false.toString())
                 val paymentRequest = JSONObject()

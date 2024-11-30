@@ -33,31 +33,21 @@ class CourseVideos : Fragment(), VideoModelAdapter.OnItemClickListener {
         super.onCreate(savedInstanceState)
         subjectID = requireArguments().getString(Constants.SUBJECT_DOCUMENT_ID).toString()
         viewModel = ViewModelProvider(this, ViewModelFactory())[CoursesViewModel::class.java]
-        viewModel.fetchCurrentAffairVideos(subjectID)
-        Log.e("CourseVideosDocid", subjectID)
+        if (!viewModel.isVideosLoaded) {
+            viewModel.fetchCurrentAffairVideos(subjectID)
+        }
+        videoModelAdapter = VideoModelAdapter(requireContext(), videoList)
+        initLivedataObserver()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        binding = FragmentCourseVideosBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.getCourseVideos.observe(viewLifecycleOwner) { response ->
+    private fun initLivedataObserver() {
+        viewModel.getCourseVideos.observe(this) { response ->
             when (response) {
                 is NetworkResult.Success -> {
                     binding.pbProgressBar.visibility = View.GONE
-                    Log.e("Videos", response.toString())
-                    if (!viewModel.isVideosLoaded) {
-                        response.data?.let { videoList.addAll(it) }
-                        viewModel.isVideosLoaded = true
-                        videoModelAdapter.notifyDataSetChanged()
-                    }
+                    response.data?.let { videoList.addAll(it) }
+                    viewModel.isVideosLoaded = true
+                    videoModelAdapter.notifyDataSetChanged()
                 }
 
                 is NetworkResult.Loading -> {
@@ -70,13 +60,23 @@ class CourseVideos : Fragment(), VideoModelAdapter.OnItemClickListener {
 
                 }
             }
-
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentCourseVideosBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
-        videoModelAdapter = VideoModelAdapter(requireContext(), videoList)
         binding.rvVideos.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvVideos.adapter = videoModelAdapter
@@ -84,7 +84,6 @@ class CourseVideos : Fragment(), VideoModelAdapter.OnItemClickListener {
     }
 
     override fun onClick(position: Int) {
-        Log.e("clicked", "true")
         (activity as MainActivity).safeNavigate(
             findNavController(), R.id.action_courseContents_to_playVideo,
             bundleOf("key" to videoList[position].videoUrl)

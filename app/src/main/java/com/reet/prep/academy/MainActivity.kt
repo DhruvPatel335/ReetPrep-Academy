@@ -33,7 +33,7 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity(), PaymentResultListener {
     lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var bottomNavigationView: BottomNavigationView
+    lateinit var bottomNavigationView: BottomNavigationView
     lateinit var drawer: DrawerLayout
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var userId: String
@@ -43,27 +43,31 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
     lateinit var actionBar: ActionBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        );
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         Checkout.preload(applicationContext);
+
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_fragment_content_main
         ) as NavHostFragment
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         navController = navHostFragment.navController
         bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)
-        bottomNavigationView.setOnItemReselectedListener {
-            while (!isStartDestination()) {
-                navController.popBackStack()
-            }
-        }
-        bottomNavigationView.setOnItemReselectedListener {
-            NavigationUI.onNavDestinationSelected(it, navController)
-        }
+
+//        bottomNavigationView.setOnItemReselectedListener {
+//            while (!isStartDestination()) {
+//                navController.popBackStack()
+//            }
+//        }
+//        bottomNavigationView.setOnItemReselectedListener {
+//            NavigationUI.onNavDestinationSelected(it, navController)
+//        }
         initDrawer()
-        binding.nvDrawer.setNavigationItemSelectedListener(onNavigationItemSelected)
 
         binding.ivMenu.setOnClickListener {
             onMenuClicked()
@@ -109,6 +113,8 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
                 //Empty overridden method
             }
         })
+        binding.nvDrawer.setNavigationItemSelectedListener(onNavigationItemSelected)
+
     }
 
     private fun onMenuClicked() {
@@ -123,7 +129,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         NavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.myProfile -> {
-                    safeNavigate(navController,R.id.action_homeNavigation_to_myProfile)
+                    safeNavigate(navController, R.id.myProfile)
                     drawer.close()
                 }
 

@@ -38,7 +38,27 @@ class QuizQuestions : Fragment() {
         quizId = requireArguments().getString(Constants.QUIZ_ID).toString()
         collectionId = requireArguments().getString(Constants.QUIZ_TYPE_ID).toString()
         viewModel.fetchTestSeriesQuestions(subjectID, quizId, collectionId)
+        initLiveDataObservers()
+    }
 
+    private fun initLiveDataObservers() {
+        viewModel.getTestSeriesQuestions.observe(this) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+                    response.data?.let { questionList.addAll(it) }
+                    loadQuestions(questionList[position], position)
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -53,26 +73,6 @@ class QuizQuestions : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getTestSeriesQuestions.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    binding.pbProgressBar.visibility = View.GONE
-
-                    response.data?.let { questionList.addAll(it) }
-                    loadQuestions(questionList[position], position)
-                    Log.e("Questions", questionList.toString())
-                }
-
-                is NetworkResult.Loading -> {
-                    binding.pbProgressBar.visibility = View.VISIBLE
-                }
-
-                is NetworkResult.Failure -> {
-                    binding.pbProgressBar.visibility = View.VISIBLE
-                }
-            }
-
-        }
 
         initClickListeners()
     }

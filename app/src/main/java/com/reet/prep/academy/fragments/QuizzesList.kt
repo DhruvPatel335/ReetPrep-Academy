@@ -35,7 +35,32 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
         viewModel = ViewModelProvider(this, ViewModelFactory())[TestSeriesViewModel::class.java]
         subjectID = requireArguments().getString(SUBJECT_DOCUMENT_ID).toString()
         collectionId = requireArguments().getString(Constants.QUIZ_TYPE_ID).toString()
-        viewModel.fetchTestSeriesQuizLiveData(subjectID, collectionId)
+        if (!viewModel.isTestSeriesSubjectsLoaded) {
+            viewModel.fetchTestSeriesQuizLiveData(subjectID, collectionId)
+        }
+        quizzesItemAdapter = QuizzesItemAdapter(requireContext(), testSeriesQuizzesList)
+        initLiveDataObservers()
+    }
+
+    private fun initLiveDataObservers() {
+        viewModel.getTestSeriesQuizList.observe(this) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    binding.pbProgressBar.visibility = View.GONE
+                    response.data?.let { testSeriesQuizzesList.addAll(it) }
+                    quizzesItemAdapter.notifyDataSetChanged()
+                    viewModel.isTestSeriesSubjectsLoaded = true
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Failure -> {
+                    binding.pbProgressBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -48,30 +73,6 @@ class QuizzesList : Fragment(), QuizzesItemAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.getTestSeriesQuizList.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    binding.pbProgressBar.visibility = View.GONE
-
-                    if (!viewModel.isTestSeriesSubjectsLoaded) {
-                        response.data?.let { testSeriesQuizzesList.addAll(it) }
-                        quizzesItemAdapter.notifyDataSetChanged()
-                        viewModel.isTestSeriesSubjectsLoaded = true
-                    }
-                }
-
-                is NetworkResult.Loading -> {
-                    binding.pbProgressBar.visibility = View.VISIBLE
-                }
-
-                is NetworkResult.Failure -> {
-                    binding.pbProgressBar.visibility = View.VISIBLE
-                }
-            }
-
-        }
-        quizzesItemAdapter = QuizzesItemAdapter(requireContext(), testSeriesQuizzesList)
         binding.rvQuizzes.apply {
             layoutManager =
                 GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)

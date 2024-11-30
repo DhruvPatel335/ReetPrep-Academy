@@ -1,0 +1,94 @@
+<navigation android:id="@+id/homeNavigation"
+    app:startDestination="@id/homeNavigation2"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <fragment
+        android:id="@+id/courseContents"
+        android:name="com.reet.prep.academy.fragments.CourseContents"
+        android:label="CourseContents">
+        <action
+            android:id="@+id/action_courseContents_to_pdfViewer"
+            app:destination="@id/pdfViewer" />
+        <action
+            android:id="@+id/action_courseContents_to_playVideo"
+            app:destination="@id/playVideo" />
+    </fragment>
+    <fragment
+        android:id="@+id/pdfViewer"
+        android:name="com.reet.prep.academy.fragments.PdfViewer"
+        android:label="fragment_pdf_viewer"
+        tools:layout="@layout/fragment_pdf_viewer" />
+    <fragment
+        android:id="@+id/testSeries"
+        android:name="com.reet.prep.academy.fragments.TestSeries"
+        android:label="fragment_test_series"
+        tools:layout="@layout/fragment_test_series">
+        <action
+            android:id="@+id/action_testSeries_to_quizzesList"
+            app:destination="@id/quizzesList" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeNavigation2"
+        android:name="com.reet.prep.academy.fragments.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeNavigation_to_courseNavigation"
+            app:destination="@id/courseNavigation" />
+        <action
+            android:id="@+id/action_homeNavigation_to_courses"
+            app:destination="@id/courses" />
+        <action
+            android:id="@+id/action_homeNavigation_to_dailyQuizzes"
+            app:destination="@id/dailyQuizzes" />
+        <action
+            android:id="@+id/action_homeNavigation_to_testSeries"
+            app:destination="@id/testSeries" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizResult"
+        android:name="com.reet.prep.academy.fragments.QuizResult"
+        android:label="QuizResult" />
+    <fragment
+        android:id="@+id/dailyQuizzes"
+        android:name="com.reet.prep.academy.fragments.DailyQuizzes"
+        android:label="fragment_daily_quizes"
+        tools:layout="@layout/fragment_daily_quizes" />
+    <fragment
+        android:id="@+id/courses"
+        android:name="com.reet.prep.academy.fragments.Courses"
+        android:label="fragment_courses"
+        tools:layout="@layout/fragment_courses">
+        <action
+            android:id="@+id/action_courses_to_courseContents"
+            app:destination="@id/courseContents" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseNavigation"
+        android:name="com.reet.prep.academy.fragments.PurchasedCourse"
+        android:label="fragment_course"
+        tools:layout="@layout/fragment_purchased_course" />
+    <fragment
+        android:id="@+id/quizzesList"
+        android:name="com.reet.prep.academy.fragments.QuizzesList"
+        android:label="QuizzesList">
+        <action
+            android:id="@+id/action_quizzesList_to_quizQuestions"
+            app:destination="@id/quizQuestions"
+            app:popUpTo="@id/quizzesList" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizQuestions"
+        android:name="com.reet.prep.academy.fragments.QuizQuestions"
+        android:label="QuizQuestions">
+        <action
+            android:id="@+id/action_quizQuestions_to_quizResult"
+            app:destination="@id/quizResult"
+            app:popUpTo="@id/quizzesList" />
+    </fragment>
+    <fragment
+        android:id="@+id/playVideo"
+        android:name="com.reet.prep.academy.fragments.PlayVideo"
+        android:label="PlayVideo" />
+</navigation>
