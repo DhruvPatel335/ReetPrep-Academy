@@ -82,7 +82,7 @@ class CoursesRepository {
     fun fetchCoursePdfs(courseId: String) {
         var pdfs = mutableListOf<CAProduct>()
         coursePdfsLiveData.postValue(NetworkResult.Loading())
-        dbAuthors.collection("courses").document(courseId).collection("pdfs")
+        dbAuthors.collection("courses").document(courseId).collection("pdfs").orderBy("sno", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
